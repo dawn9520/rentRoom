@@ -47,6 +47,9 @@
           }
         ],
       }
+    ],
+    "requestPermissions":[ // 申请权限
+      { "name" : "ohos.permission.INTERNET" }, // 使用网络
     ]
   }
 }
