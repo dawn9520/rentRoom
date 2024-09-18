@@ -1,8 +1,10 @@
+import SwiperLayout from '../views/Home/SwiperLayout'
+
 @Component
 export default struct Home {
   build() {
     Column() {
-      Text("Home.ets");
-    }
+      SwiperLayout()
+    }.height('100%')
   }
 }

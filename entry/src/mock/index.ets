@@ -1,0 +1,1 @@
+export  { bannerInfo, IBannerItem } from './bannerInfo'
