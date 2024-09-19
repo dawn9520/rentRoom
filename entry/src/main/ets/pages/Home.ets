@@ -2,9 +2,10 @@ import SwiperLayout from '../views/Home/SwiperLayout';
 import SearchBar from '../views/Home/SearchBar';
 import NavList from '../views/Home/NavList';
 import TileList from '../views/Home/TileList';
+import PlanList from '../views/Home/PlanList';
 
 import { getHomeDataApi } from '../api/home';
-import { BannerListDataSource, INavList, ITileList } from '../models/HomeData';
+import { BannerListDataSource, INavList, ITileList, IPlanList } from '../models/HomeData';
 import { PADDING } from '../constants/size'
 
 @Component
@@ -13,6 +14,7 @@ export default struct Home {
   @State bannerList: BannerListDataSource = new BannerListDataSource()
   @State navList: INavList = [];
   @State tileList: ITileList = [];
+  @State planList: IPlanList = [];
 
   // 获取首页数据函数
   getHomeData = async () => {
@@ -20,6 +22,7 @@ export default struct Home {
     this.bannerList.setList(homeData.bannerList);
     this.navList = homeData.navList;
     this.tileList = homeData.tileList;
+    this.planList = homeData.planList;
   }
 
   // 生命周期函数：初始化渲染时触发
@@ -35,6 +38,7 @@ export default struct Home {
           Column() {
             NavList({ navList: this.navList })
             TileList({ tileList: this.tileList })
+            PlanList({ planList: this.planList })
           }.padding({ left: PADDING, right: PADDING })
         }
         .justifyContent(FlexAlign.Start)
