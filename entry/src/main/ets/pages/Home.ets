@@ -3,6 +3,7 @@ import SearchBar from '../views/Home/SearchBar';
 import NavList from '../views/Home/NavList';
 import TileList from '../views/Home/TileList';
 import PlanList from '../views/Home/PlanList';
+import Ad from '../views/Home/Ad';
 
 import { getHomeDataApi } from '../api/home';
 import { BannerListDataSource, INavList, ITileList, IPlanList } from '../models/HomeData';
@@ -15,6 +16,7 @@ export default struct Home {
   @State navList: INavList = [];
   @State tileList: ITileList = [];
   @State planList: IPlanList = [];
+  @State adPicture: string = '';
 
   // 获取首页数据函数
   getHomeData = async () => {
@@ -23,6 +25,7 @@ export default struct Home {
     this.navList = homeData.navList;
     this.tileList = homeData.tileList;
     this.planList = homeData.planList;
+    this.adPicture = homeData.adPicture;
   }
 
   // 生命周期函数：初始化渲染时触发
@@ -39,6 +42,7 @@ export default struct Home {
             NavList({ navList: this.navList })
             TileList({ tileList: this.tileList })
             PlanList({ planList: this.planList })
+            Ad({ adPicture: this.adPicture })
           }.padding({ left: PADDING, right: PADDING })
         }
         .justifyContent(FlexAlign.Start)
