@@ -2,7 +2,7 @@ import { getHomeDataApi } from '../api/home';
 import { BannerListDataSource } from '../models/HomeData';
 
 import SwiperLayout from '../views/Home/SwiperLayout';
-
+import SearchBar from '../views/Home/SearchBar';
 
 @Component
 export default struct Home {
@@ -21,8 +21,16 @@ export default struct Home {
   }
 
   build() {
-    Column() {
-      SwiperLayout({ bannerList: this.bannerList })
-    }.height('100%')
+    Stack() {
+      Scroll() { // 滚动组件 暂时不知道为啥要在这里使用这个组件？
+        SwiperLayout({ bannerList: this.bannerList })
+      }
+      .height('100%')
+      .align(Alignment.TopStart)
+
+      SearchBar()
+    }
+    .height('100%')
+    .alignContent(Alignment.Top)
   }
 }
