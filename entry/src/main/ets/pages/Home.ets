@@ -4,6 +4,7 @@ import NavList from '../views/Home/NavList';
 import TileList from '../views/Home/TileList';
 import PlanList from '../views/Home/PlanList';
 import Ad from '../views/Home/Ad';
+import RoomRecommend from '../views/Home/RoomRecommend';
 
 import { getHomeDataApi } from '../api/home';
 import { BannerListDataSource, INavList, ITileList, IPlanList } from '../models/HomeData';
@@ -44,6 +45,7 @@ export default struct Home {
             PlanList({ planList: this.planList })
             Ad({ adPicture: this.adPicture })
           }.padding({ left: PADDING, right: PADDING })
+          RoomRecommend()
         }
         .justifyContent(FlexAlign.Start)
       }
