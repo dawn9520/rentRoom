@@ -28,7 +28,7 @@ export default struct Home {
 
   build() {
     Column() {
-      SwiperLayout()
+      SwiperLayout({ bannerList: this.bannerList })
     }.height('100%')
   }
 }

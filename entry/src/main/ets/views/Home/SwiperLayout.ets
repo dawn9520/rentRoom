@@ -1,13 +1,13 @@
-import { bannerInfo, IBannerItem } from '../../../../mock'
+import type { IBannerItem } from '../../model/HomeData'
 
 @Component
 export default struct SwiperLayout {
-  @State bannerList: IBannerItem[] = bannerInfo
+  @Prop bannerList: IBannerItem[]
 
   build() {
     Swiper() {
       ForEach(this.bannerList, (banner: IBannerItem) => {
-        Image($r(banner.imageURL)).width('100%').height(175)
+        Image(banner.imageURL).width('100%').height(175)
       }, (item: IBannerItem) => item.id + '')
     }
     .loop(true) // 设置循环:即最后一张图滑动后衔接第一张图
