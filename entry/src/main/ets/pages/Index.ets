@@ -7,7 +7,6 @@ import My from './My';
 @Entry
 @Component
 struct Index {
-
   // 当前 tab 高亮的下标
   @State currentIndex: number = 0;
 
