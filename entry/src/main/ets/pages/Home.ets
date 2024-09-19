@@ -1,29 +1,23 @@
+import { getHomeDataApi } from '../api/home';
+import { BannerListDataSource } from '../models/HomeData';
+
 import SwiperLayout from '../views/Home/SwiperLayout';
 
-import { getHomeDataApi } from '../api/home';
-import type { IBannerList, INavList, IPlanList, ITileList } from '../model/HomeData';
 
 @Component
 export default struct Home {
   // 首页数据
-  @State bannerList: IBannerList = [];
-  @State navList: INavList = [];
-  @State tileList: ITileList = [];
-  @State planList: IPlanList = [];
-  @State adPicture: string = '';
+  @State bannerList: BannerListDataSource = new BannerListDataSource()
 
-  // 组件生命周期
-  aboutToAppear() {
-    this.getHomeData()
+  // 获取首页数据函数
+  getHomeData = async () => {
+    const result = await getHomeDataApi()
+    this.bannerList.setList(result.bannerList);
   }
 
-  async getHomeData() {
-    const homeData = await getHomeDataApi()
-    this.bannerList = homeData.bannerList;
-    this.navList = homeData.navList;
-    this.tileList = homeData.tileList;
-    this.planList = homeData.planList;
-    this.adPicture = homeData.adPicture;
+  // 生命周期函数：初始化渲染时触发
+  aboutToAppear(): void {
+    this.getHomeData()
   }
 
   build() {

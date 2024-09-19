@@ -1,15 +1,18 @@
-import type { IBannerItem } from '../../model/HomeData'
+import { BannerListDataSource, IBannerItem } from '../../models/HomeData';
 
 @Component
 export default struct SwiperLayout {
-  @Prop bannerList: IBannerItem[]
+  // 这里使用@ObjectLink配合BannerListDataSource
+  @ObjectLink bannerList: BannerListDataSource;
 
   build() {
     Swiper() {
-      ForEach(this.bannerList, (banner: IBannerItem) => {
-        Image(banner.imageURL).width('100%').height(175)
-      }, (item: IBannerItem) => item.id + '')
+      LazyForEach(this.bannerList, (banner: IBannerItem) => {
+        Image(banner.imageURL).width('100%').height('100%').objectFit(ImageFit.Fill)
+      }, (banner: IBannerItem) => banner.id + '')
     }
+    .width('100%')
+    .height(211 - 36) // 暂时减去状态栏高度
     .loop(true) // 设置循环:即最后一张图滑动后衔接第一张图
     // .autoPlay(true) // 设置自动轮播
     // .interval(1000) // 轮播时间
