@@ -5,9 +5,10 @@ import TileList from '../views/Home/TileList';
 import PlanList from '../views/Home/PlanList';
 import Ad from '../views/Home/Ad';
 import RoomRecommend from '../views/Home/RoomRecommend';
+import ScrollContainer from '../components/ScrollContainer';
 
 import { getHomeDataApi } from '../api/home';
-import { BannerListDataSource, INavList, ITileList, IPlanList } from '../models/HomeData';
+import { BannerListDataSource, INavList, ITileList, IPlanList, IColor } from '../models/HomeData';
 import { PADDING } from '../constants/size'
 
 @Component
@@ -37,50 +38,31 @@ export default struct Home {
     this.getHomeData()
   }
 
-  // 处理滚动
-  handleScroll = (xOffset: number, yOffset: number) => {
-    this.scrollY += yOffset;
-    if (this.scrollY < 0) {
-      this.scrollY = 0;
-    }
-    this.calcColor()
+  @Builder
+  contentBuilder() {
+    SwiperLayout({ bannerList: this.bannerList })
+    Column() {
+      NavList({ navList: this.navList })
+      TileList({ tileList: this.tileList })
+      PlanList({ planList: this.planList })
+      Ad({ adPicture: this.adPicture })
+    }.padding({ left: PADDING, right: PADDING })
+
+    RoomRecommend()
   }
-  // 计算颜色
-  calcColor = () => {
-    // 滚动计算的 scrollY 的值到达顶部可能不是 0，给点误差
-    if (this.scrollY > 10) {
-      this.bgColor = 'rgba(255, 255, 255, 1)'
-      this.fontColor = 'rgb(0, 0, 0)'
-    } else {
-      this.bgColor = 'rgba(255, 255, 255, 0)'
-      this.fontColor = 'rgb(255, 255, 255)'
-    }
+
+  @Builder
+  navBuilder($$: IColor) {
+    SearchBar({ bgColor: $$.bgColor, fontColor: $$.fontColor });
   }
 
 
   build() {
-    Stack() {
-      Scroll() { // 滚动组件 暂时不知道为啥要在这里使用这个组件？
-        Column() {
-          SwiperLayout({ bannerList: this.bannerList })
-          Column() {
-            NavList({ navList: this.navList })
-            TileList({ tileList: this.tileList })
-            PlanList({ planList: this.planList })
-            Ad({ adPicture: this.adPicture })
-          }.padding({ left: PADDING, right: PADDING })
-          RoomRecommend()
-        }
-        .justifyContent(FlexAlign.Start)
-      }
-      .height('100%')
-      .align(Alignment.TopStart)
-      .scrollBar(BarState.Off) // 设置滚动条不显示 Off不显示 On常驻显示 Auto按需显示(触摸时显示，2s后消失)
-      .onDidScroll(this.handleScroll)
-
-      SearchBar({ bgColor: this.bgColor, fontColor: this.fontColor })
-    }
-    .height('100%')
-    .alignContent(Alignment.Top)
+    ScrollContainer({
+      contentBuilder: () => { // 这里用箭头函数包裹是因为contentBuilder中需要使用this
+        this.contentBuilder()
+      },
+      navBuilder: this.navBuilder
+    })
   }
 }

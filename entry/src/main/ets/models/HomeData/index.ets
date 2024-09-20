@@ -132,3 +132,8 @@ export interface IBannerItem {
 }
 
 export type IBannerList = IBannerItem[]
+
+export interface IColor {
+  fontColor: string;
+  bgColor: string;
+}
