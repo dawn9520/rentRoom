@@ -1,4 +1,6 @@
 import { IColor } from '../models/HomeData';
+import { getWindowTopHeight } from '../utils/responsive';
+import { window } from '@kit.ArkUI';
 
 @Component
 export default struct ScrollContainer {
@@ -6,7 +8,19 @@ export default struct ScrollContainer {
   @BuilderParam navBuilder: ($$: IColor) => void = this.defaultBuilder
   scrollY: number = 0;
   @State bgColor: string = 'rgba(255, 255, 255, 0)'
-  @State fontColor: string = 'rgb(255, 255, 255)'
+  @State fontColor: string = '#FFFFFF'
+
+  // 设置 window 状态栏颜色
+  setWindowStatusColor = async () => {
+    const windowClass = await window.getLastWindow(getContext())
+    windowClass.setWindowSystemBarProperties({
+      statusBarContentColor: this.fontColor,
+    })
+  }
+
+  aboutToAppear(): void {
+    this.setWindowStatusColor()
+  }
 
   @Builder
   defaultBuilder() {
@@ -20,15 +34,16 @@ export default struct ScrollContainer {
       this.scrollY = 0
     }
     this.calcColor();
+    this.setWindowStatusColor();
   }
   // 计算颜色
   calcColor = () => {
     if (this.scrollY > 10) {
       this.bgColor = 'rgba(255, 255, 255, 1)'
-      this.fontColor = 'rgb(0, 0, 0)'
+      this.fontColor = '#000000'
     } else {
       this.bgColor = 'rgba(255, 255, 255, 0)'
-      this.fontColor = 'rgb(255, 255, 255)'
+      this.fontColor = '#FFFFFF'
     }
   }
 
@@ -50,7 +65,9 @@ export default struct ScrollContainer {
       Column() {
         // 渲染头部导航
         this.navBuilder({ fontColor: this.fontColor, bgColor: this.bgColor })
-      }.backgroundColor(this.bgColor)
+      }
+      .backgroundColor(this.bgColor)
+      .padding({ top: getWindowTopHeight() }) // 设置顶部状态栏距离，避免搜索部分的内容被状态栏遮住
 
     }.height('100%').alignContent(Alignment.TopStart)
   }

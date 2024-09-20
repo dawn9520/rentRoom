@@ -11,7 +11,7 @@ export default class EntryAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
   }
 
-  onWindowStageCreate(windowStage: window.WindowStage): void {
+  async onWindowStageCreate(windowStage: window.WindowStage) {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
@@ -22,6 +22,19 @@ export default class EntryAbility extends UIAbility {
       }
       hilog.info(0x0000, 'testTag', 'Succeeded in loading the content.');
     });
+
+    const windowClass = await windowStage.getMainWindow();
+    // 1. 设置全屏
+    windowClass.setWindowLayoutFullScreen(true);
+    // // 2. 设置状态栏颜色
+    // windowClass.setWindowSystemBarProperties({
+    //   statusBarContentColor: '#FFFFFF',
+    //   navigationBarContentColor: '#FFFFFF'
+    // })
+    // 3. 获取状态栏高度并存储起来
+    const avoidArea = windowClass.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
+    AppStorage.setOrCreate('windowTopHeight', avoidArea.topRect.height); // 获取的高度单位为px,使用时需要用px2vp()方法转化
+    AppStorage.setOrCreate('windowBottomHeight', avoidArea.bottomRect.height); // 同上
   }
 
   onWindowStageDestroy(): void {

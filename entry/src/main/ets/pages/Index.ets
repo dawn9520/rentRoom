@@ -3,6 +3,7 @@ import See from './See';
 import Service from './Service';
 import Discover from './Discover';
 import My from './My';
+import { getWindowBottomHeight } from '../utils/responsive';
 
 @Entry
 @Component
@@ -47,7 +48,7 @@ struct Index {
       .onChange((index: number) => {
         this.currentIndex = index
       })
-      .barHeight(50) // 设置 tab 导航栏的高度，默认 56
+      .barHeight(50 + getWindowBottomHeight()) // 设置 tab 导航栏的高度，默认 56, getWindowBottomHeight如果手机设备底部有距离，这里会进行添加
       .scrollable(false) // 禁止左右滑动切换
       .width('100%')
       .height('100%')
