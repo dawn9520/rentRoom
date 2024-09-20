@@ -3,7 +3,7 @@ import See from './See';
 import Service from './Service';
 import Discover from './Discover';
 import My from './My';
-import { getWindowBottomHeight } from '../utils/responsive';
+import { getWindowBottomHeight, rvp } from '../utils/responsive';
 
 @Entry
 @Component
@@ -15,8 +15,8 @@ struct Index {
   @Builder TabBuilder(index: number, text: string, icon: Resource, activeIcon: Resource) {
     Column() {
       // 项目中常用的颜色、大小等会定义成常量，将来方便复用和统一调整。而不常用的大小颜色就不需要定义了，直接写死即可。
-      Image(this.currentIndex === index ? activeIcon : icon).width(28)
-      Text(text).fontSize(10).fontColor(this.currentIndex === index ? $r('app.color.black') : '#a0a0a0').height(15)
+      Image(this.currentIndex === index ? activeIcon : icon).width(rvp(28))
+      Text(text).fontSize(rvp(10)).fontColor(this.currentIndex === index ? $r('app.color.black') : '#a0a0a0').height(rvp(15))
     }.width('100%').height('100%').justifyContent(FlexAlign.Center)
   }
 
@@ -48,7 +48,7 @@ struct Index {
       .onChange((index: number) => {
         this.currentIndex = index
       })
-      .barHeight(50 + getWindowBottomHeight()) // 设置 tab 导航栏的高度，默认 56, getWindowBottomHeight如果手机设备底部有距离，这里会进行添加
+      .barHeight(rvp(50) + getWindowBottomHeight()) // 设置 tab 导航栏的高度，默认 56, getWindowBottomHeight如果手机设备底部有距离，这里会进行添加
       .scrollable(false) // 禁止左右滑动切换
       .width('100%')
       .height('100%')

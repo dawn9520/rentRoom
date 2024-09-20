@@ -35,6 +35,10 @@ export default class EntryAbility extends UIAbility {
     const avoidArea = windowClass.getWindowAvoidArea(window.AvoidAreaType.TYPE_SYSTEM);
     AppStorage.setOrCreate('windowTopHeight', avoidArea.topRect.height); // 获取的高度单位为px,使用时需要用px2vp()方法转化
     AppStorage.setOrCreate('windowBottomHeight', avoidArea.bottomRect.height); // 同上
+    // 4. 获取屏幕宽高并存储起来
+    const properties = windowClass.getWindowProperties()
+    AppStorage.setOrCreate('windowHeight', properties.windowRect.height); // 获取的高度单位为px,使用时需要用px2vp()方法转化
+    AppStorage.setOrCreate('windowWidth', properties.windowRect.width); // 同上
   }
 
   onWindowStageDestroy(): void {

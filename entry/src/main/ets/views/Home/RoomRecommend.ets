@@ -2,6 +2,7 @@ import { IRoomRecommendItem, ITagItem, RoomRecommendDataSource } from '../../mod
 import { getRoomRecommendListApi } from '../../api/home'
 
 import { BORDER_RADIUS, PADDING } from '../../constants/size'
+import { rvp } from '../../utils/responsive'
 
 @Component
 export default struct RoomRecommend {
@@ -24,18 +25,18 @@ export default struct RoomRecommend {
       Text() {
         Span('周边房源')
         Span('推荐').fontColor($r('app.color.primary'))
-      }.fontSize(18)
+      }.fontSize(rvp(18))
 
-      Row({ space: 6 }) {
-        Text('更多推荐').fontColor($r('app.color.gray_second')).fontSize(12)
-        Image($r('app.media.arrow_right')).width(4).height(8)
+      Row({ space: rvp(6) }) {
+        Text('更多推荐').fontColor($r('app.color.gray_second')).fontSize(rvp(12))
+        Image($r('app.media.arrow_right')).width(rvp(4)).height(rvp(8))
       }
     }
     .width('100%')
-    .height(67)
+    .height(rvp(67))
     .justifyContent(FlexAlign.SpaceBetween)
     .backgroundColor($r('app.color.white'))
-    .padding({ left: PADDING, right: PADDING, top: 23 })
+    .padding({ left: rvp(PADDING), right: rvp(PADDING), top: rvp(23) })
   }
 
   // 房源列表
@@ -48,63 +49,63 @@ export default struct RoomRecommend {
             Stack() {
               Column() {
                 // 房间图片内容
-                Image(room.housePicture).width('100%').height(120).objectFit(ImageFit.Fill).borderRadius({
-                  topLeft: BORDER_RADIUS,
-                  topRight: BORDER_RADIUS
+                Image(room.housePicture).width('100%').height(rvp(120)).objectFit(ImageFit.Fill).borderRadius({
+                  topLeft: rvp(BORDER_RADIUS),
+                  topRight: rvp(BORDER_RADIUS)
                 })
                 // 房间信息内容
                 Column() {
                   Row() {
                     Text() {
-                      Span(room.rentPriceListing).fontSize(16).fontColor('#E03810')
-                      Span(room.rentPriceUnit).fontSize(14).fontColor('#E03810')
-                    }.height(22)
+                      Span(room.rentPriceListing).fontSize(rvp(16)).fontColor('#E03810')
+                      Span(room.rentPriceUnit).fontSize(rvp(14)).fontColor('#E03810')
+                    }.height(rvp(22))
 
-                    Text(room.rentArea + '㎡').fontSize(12).fontColor($r('app.color.gray'))
+                    Text(room.rentArea + '㎡').fontSize(rvp(12)).fontColor($r('app.color.gray'))
                   }.width('100%').justifyContent(FlexAlign.SpaceBetween)
 
                   Text(room.houseTitle)
-                    .fontSize(14)
-                    .margin({ top: 1 })
-                    .height(19)
+                    .fontSize(rvp(14))
+                    .margin({ top: rvp(1) })
+                    .height(rvp(19))
                     .maxLines(1)
                     .textOverflow({ overflow: TextOverflow.Ellipsis })
-                  Row({ space: 6 }) {
+                  Row({ space: rvp(6) }) {
                     ForEach(room.tags.slice(0, 2), (tag: ITagItem, index) => {
                       Text(tag.name)
                         .padding({
-                          top: 1,
-                          bottom: 1,
-                          left: 6,
-                          right: 6
+                          top: rvp(1),
+                          bottom: rvp(1),
+                          left: rvp(6),
+                          right: rvp(6)
                         })
                         .fontColor(index === 0 ? $r('app.color.white') : '#B3B3B3')
                         .backgroundColor(index === 0 ? $r('app.color.primary') : $r('app.color.bg_gray'))
-                        .fontSize(12)
+                        .fontSize(rvp(12))
                     }, (tag: ITagItem) => tag.name)
-                  }.width('100%').margin({ top: 9 })
-                }.padding(12).alignItems(HorizontalAlign.Start).height(91)
+                  }.width('100%').margin({ top: rvp(9) })
+                }.padding(rvp(12)).alignItems(HorizontalAlign.Start).height(rvp(91))
               }.width('100%')
               // 图片灰色遮罩图片
-              Image($r('app.media.room_text_bg')).width('100%').height(120)
+              Image($r('app.media.room_text_bg')).width('100%').height(rvp(120))
               // 位置信息
-              Row({ space: 6 }) {
-                Image($r('app.media.location')).width(12).height(14)
-                Text(room.address).fontSize(12).fontColor($r('app.color.white'))
-              }.margin({ left: 8, top: 99 })
+              Row({ space: rvp(6) }) {
+                Image($r('app.media.location')).width(rvp(12)).height(rvp(14))
+                Text(room.address).fontSize(rvp(12)).fontColor($r('app.color.white'))
+              }.margin({ left: rvp(8), top: rvp(99) })
             }.alignContent(Alignment.TopStart).backgroundColor($r('app.color.white'))
-          }.height(210)
+          }.height(rvp(210))
         }, (room: IRoomRecommendItem) => room.id)
       }
       .columnsTemplate('1fr 1fr') // 竖直方向两列排布
-      .columnsGap(8) // 竖直方向间隙
-      .rowsGap(8) // 水平方向间隙
+      .columnsGap(rvp(8)) // 竖直方向间隙
+      .rowsGap(rvp(8)) // 水平方向间隙
       .width('100%')
       .padding({
         left: PADDING,
         right: PADDING,
-        top: 8,
-        bottom: 8
+        top: rvp(8),
+        bottom: rvp(8)
       })
       .backgroundColor($r('app.color.bg_gray'))
       .borderRadius(BORDER_RADIUS)

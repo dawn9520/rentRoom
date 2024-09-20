@@ -1,5 +1,6 @@
 import type { ITileItem, ITileList } from '../../models/HomeData';
 import { BORDER_RADIUS } from '../../constants/size';
+import { rvp } from '../../utils/responsive'
 
 @Component
 export default struct TileList {
@@ -8,14 +9,14 @@ export default struct TileList {
   build() {
     Row() {
       ForEach(this.tileList, (tile: ITileItem) => {
-        Column({ space: 8 }) {
-          Image(tile.imageURL).width('100%').height(57).borderRadius(BORDER_RADIUS)
-          Row({ space: 5 }) {
-            Text(tile.title).fontSize(12)
-            Text(tile.sub_title).fontSize(10).fontColor($r('app.color.gray'))
+        Column({ space: rvp(8) }) {
+          Image(tile.imageURL).width('100%').height(rvp(57)).borderRadius(BORDER_RADIUS)
+          Row({ space: rvp(5) }) {
+            Text(tile.title).fontSize(rvp(12))
+            Text(tile.sub_title).fontSize(rvp(10)).fontColor($r('app.color.gray'))
           }.justifyContent(FlexAlign.Start).width('100%')
-        }.width(148)
+        }.width(rvp(148))
       }, (tile: ITileItem) => tile.id + '')
-    }.width('100%').height(79).margin({ top: 10 }).justifyContent(FlexAlign.SpaceBetween)
+    }.width('100%').height(rvp(79)).margin({ top: rvp(10) }).justifyContent(FlexAlign.SpaceBetween)
   }
 }

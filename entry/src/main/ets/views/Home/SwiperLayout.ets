@@ -1,5 +1,7 @@
 import { BannerListDataSource, IBannerItem } from '../../models/HomeData';
 import { getWindowTopHeight } from '../../utils/responsive';
+import { rvp } from '../../utils/responsive'
+
 @Component
 export default struct SwiperLayout {
   // 这里使用@ObjectLink配合BannerListDataSource
@@ -13,7 +15,7 @@ export default struct SwiperLayout {
       }, (banner: IBannerItem) => banner.id + '')
     }
     .width('100%')
-    .height(175 + getWindowTopHeight()) // 暂时减去状态栏高度
+    .height(rvp(175) + getWindowTopHeight()) // 暂时减去状态栏高度
     .loop(true) // 设置循环:即最后一张图滑动后衔接第一张图
     // .autoPlay(true) // 设置自动轮播
     // .interval(1000) // 轮播时间

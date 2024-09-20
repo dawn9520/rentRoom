@@ -1,4 +1,5 @@
 import { PADDING } from '../../constants/size';
+import { rvp } from '../../utils/responsive'
 
 @Component
 export default struct SearchBar {
@@ -7,18 +8,18 @@ export default struct SearchBar {
 
   build() {
     Row() {
-      Text("北京").fontSize(14).fontColor(this.fontColor)
+      Text("北京").fontSize(rvp(14)).fontColor(this.fontColor)
       Row() {
-        Image($r("app.media.search")).imageStyles(18).margin({ right: 10 })
+        Image($r("app.media.search")).imageStyles(rvp(18)).margin({ right: rvp(10) })
         // layoutWeight(1) 占剩下的空间的1份（占据剩下空间）
         TextInput({ placeholder: '公司/地铁/小区，马上搜索' })
           .layoutWeight(1)
           .height('100%')
-          .fontSize(12)
+          .fontSize(rvp(12))
           .placeholderColor($r('app.color.gray'))
-          .placeholderFont({ size: 12 })
+          .placeholderFont({ size: rvp(12) })
           .caretColor($r('app.color.gray'))// 光标颜色
-          .padding(0)
+          .padding(rvp(0))
           .backgroundColor($r('app.color.white'))
           .stateStyles({
             // 状态样式
@@ -26,29 +27,29 @@ export default struct SearchBar {
           })
 
         Column() {
-        }.width(1).height(18).backgroundColor('#D7D7D7').margin({ left: 10 })
+        }.width(rvp(1)).height(rvp(18)).backgroundColor('#D7D7D7').margin({ left: rvp(10) })
 
-        Image($r("app.media.position")).imageStyles(18).margin({ left: 16 })
+        Image($r("app.media.position")).imageStyles(rvp(18)).margin({ left: rvp(16) })
       }
-      .width(244)
-      .height(38)
+      .width(rvp(244))
+      .height(rvp(38))
       .backgroundColor($r('app.color.white'))
-      .padding({ left: PADDING, right: PADDING })
+      .padding({ left: rvp(PADDING), right: rvp(PADDING) })
       .border({
-        width: 1,
+        width: rvp(1),
         radius: 52,
         color: '#D7D7D7'
       })
 
       // 图片需要通过 fillColor 修改颜色，只有 svg 图片能用
-      Image($r("app.media.message")).imageStyles(24).fillColor(this.fontColor)
+      Image($r("app.media.message")).imageStyles(rvp(24)).fillColor(this.fontColor)
     }
     .width('100%')
     .padding({
       left: PADDING,
       right: PADDING,
-      top: 4,
-      bottom: 4
+      top: rvp(4),
+      bottom: rvp(4)
     })
     .justifyContent(FlexAlign.SpaceBetween)
     .backgroundColor(this.bgColor)

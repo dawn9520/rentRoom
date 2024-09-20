@@ -1,4 +1,5 @@
 import type { INavItem, INavList } from '../../models/HomeData'
+import { rvp } from '../../utils/responsive'
 
 @Component
 export default struct NavList {
@@ -8,20 +9,20 @@ export default struct NavList {
     Grid() {
       ForEach(this.navList, (nav: INavItem) => {
         GridItem() {
-          Column({ space: 8 }) {
-            Image(nav.imageURL).width('100%').height(56).objectFit(ImageFit.Fill)
-            Text(nav.title).fontSize(12)
+          Column({ space: rvp(8) }) {
+            Image(nav.imageURL).width('100%').height(rvp(56)).objectFit(ImageFit.Fill)
+            Text(nav.title).fontSize(rvp(12))
           }
-        }.width(58)
+        }.width(rvp(58))
       }, (nav: INavItem) => nav.id + '')
     }
     .columnsTemplate('1fr 1fr 1fr 1fr')
     .rowsTemplate('1fr 1fr')
-    .rowsGap(14)
-    .columnsGap(33)
-    .height(170)
+    .rowsGap(rvp(14))
+    .columnsGap(rvp(33))
+    .height(rvp(170))
     .margin({
-      top: 24
+      top: rvp(24)
     })
   }
 }
