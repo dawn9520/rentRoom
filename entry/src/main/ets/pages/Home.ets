@@ -18,6 +18,9 @@ export default struct Home {
   @State tileList: ITileList = [];
   @State planList: IPlanList = [];
   @State adPicture: string = '';
+  scrollY: number = 0; // 存储滚动距离
+  @State bgColor: string = 'rgba(255, 255, 255, 0)'
+  @State fontColor: string = 'rgb(255, 255, 255)'
 
   // 获取首页数据函数
   getHomeData = async () => {
@@ -33,6 +36,27 @@ export default struct Home {
   aboutToAppear(): void {
     this.getHomeData()
   }
+
+  // 处理滚动
+  handleScroll = (xOffset: number, yOffset: number) => {
+    this.scrollY += yOffset;
+    if (this.scrollY < 0) {
+      this.scrollY = 0;
+    }
+    this.calcColor()
+  }
+  // 计算颜色
+  calcColor = () => {
+    // 滚动计算的 scrollY 的值到达顶部可能不是 0，给点误差
+    if (this.scrollY > 10) {
+      this.bgColor = 'rgba(255, 255, 255, 1)'
+      this.fontColor = 'rgb(0, 0, 0)'
+    } else {
+      this.bgColor = 'rgba(255, 255, 255, 0)'
+      this.fontColor = 'rgb(255, 255, 255)'
+    }
+  }
+
 
   build() {
     Stack() {
@@ -51,8 +75,10 @@ export default struct Home {
       }
       .height('100%')
       .align(Alignment.TopStart)
+      .scrollBar(BarState.Off) // 设置滚动条不显示 Off不显示 On常驻显示 Auto按需显示(触摸时显示，2s后消失)
+      .onDidScroll(this.handleScroll)
 
-      SearchBar()
+      SearchBar({ bgColor: this.bgColor, fontColor: this.fontColor })
     }
     .height('100%')
     .alignContent(Alignment.Top)
