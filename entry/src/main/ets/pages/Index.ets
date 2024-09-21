@@ -9,7 +9,7 @@ import { getWindowBottomHeight, rvp } from '../utils/responsive';
 @Component
 struct Index {
   // 当前 tab 高亮的下标
-  @State currentIndex: number = 1;
+  @State currentIndex: number = 2;
 
   // 生成 tab 的函数
   @Builder TabBuilder(index: number, text: string, icon: Resource, activeIcon: Resource) {
