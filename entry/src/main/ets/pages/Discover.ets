@@ -1,4 +1,5 @@
 import { getDiscoverDataApi } from '../api/discover'
+import ScrollContainer from '../components/ScrollContainer'
 
 @Component
 export default struct Discover {
@@ -8,12 +9,22 @@ export default struct Discover {
 
   async getDiscoverData() {
     const discoverData = await getDiscoverDataApi()
-    console.info('----discoverData', JSON.stringify(discoverData))
+  }
+
+  @Builder
+  navBuilder() {
+    Text('navBar')
+  }
+
+  @Builder
+  contentBuilder() {
+    Text('content')
   }
 
   build() {
-    Column() {
-      Text("Discover");
-    }
+    ScrollContainer({
+      contentBuilder: this.contentBuilder,
+      navBuilder: this.navBuilder,
+    })
   }
 }
