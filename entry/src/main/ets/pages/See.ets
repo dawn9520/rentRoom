@@ -1,5 +1,6 @@
 import ScrollContainer from '../components//ScrollContainer'
 import NavBar from '../views/See/NavBar'
+import FindRoom from '../views/See/FindRoom'
 
 import { PADDING } from '../constants/size'
 import { rvp } from '../utils/responsive'
@@ -14,6 +15,7 @@ export default struct See {
   @Builder
   contentBuilder() {
     Column() {
+      FindRoom()
     }.width('100%').height('100%').padding({ left: rvp(PADDING), right: rvp(PADDING) }).linearGradient({
       angle: 180, // 线性渐变的起始角度。0点方向顺时针旋转为正向角度 默认值：180
       direction: GradientDirection.Top,
