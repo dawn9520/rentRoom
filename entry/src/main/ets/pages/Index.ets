@@ -43,7 +43,7 @@ struct Index {
           My()
         }.tabBar(this.TabBuilder(4, '我的', $r('app.media.tabbar_my'), $r('app.media.tabbar_my_active')))
       }
-      .vertical(false) // 设置tab位置在底部
+      .vertical(false) // 设置tab位置在竖直方向
       .barMode(BarMode.Fixed) // 用于控制导航栏是否可以滚动，默认值为BarMode.Fixed
       .onChange((index: number) => {
         this.currentIndex = index

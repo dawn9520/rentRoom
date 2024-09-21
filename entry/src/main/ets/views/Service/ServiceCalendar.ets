@@ -72,8 +72,8 @@ export default struct ServiceCalendar {
     .padding(rvp(8))
     .borderRadius(rvp(BORDER_RADIUS))
     .margin({ top: rvp(12) })
-    .linearGradient({
-      angle: 210,
+    .linearGradient({ // 使用渐变
+      angle: 210, // 从右上角开始
       colors: [['#D0FFDB', 0], ['rgba(255, 255, 255, 1)', 0.29], ['rgba(255, 255, 255, 0)', 1]],
       repeating: false
     })
