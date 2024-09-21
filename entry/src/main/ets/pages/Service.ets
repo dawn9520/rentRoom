@@ -8,6 +8,7 @@ import Bg from '../views/Service/Bg';
 import ScrollContainer from '../components/ScrollContainer';
 import NavBar from '../views/Service/NavBar';
 import VIP from '../views/Service/VIP';
+import DomesticService from '../views/Service/DomesticService'
 
 @Component
 export default struct Service {
@@ -35,6 +36,7 @@ export default struct Service {
       Bg()
       Column() {
         VIP({ vipServiceList: this.vipServiceList })
+        DomesticService({ homeServiceList: this.homeServiceList })
       }.padding({ left: rvp(PADDING), right: rvp(PADDING), top: getWindowTopHeight() })
     }.alignContent(Alignment.TopStart)
   }
