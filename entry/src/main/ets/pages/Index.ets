@@ -4,12 +4,18 @@ import Service from './Service';
 import Discover from './Discover';
 import My from './My';
 import { getWindowBottomHeight, rvp } from '../utils/responsive';
+import type { IColors } from '../models/ColorsData'
+import { setWindowStatusColor } from '../utils/method';
 
 @Entry
 @Component
 struct Index {
+  @StorageLink('navBarBgColor') navBarFontColor: string = ''
+  @StorageLink('navBarFontColor') navBarBgColor: string = ''
+
   // 当前 tab 高亮的下标
-  @State currentIndex: number = 2;
+  @State currentIndex: number = 0;
+  colors: IColors = []
 
   // 生成 tab 的函数
   @Builder TabBuilder(index: number, text: string, icon: Resource, activeIcon: Resource) {
@@ -46,6 +52,22 @@ struct Index {
       .vertical(false) // 设置tab位置在竖直方向
       .barMode(BarMode.Fixed) // 用于控制导航栏是否可以滚动，默认值为BarMode.Fixed
       .onChange((index: number) => {
+
+        // 将上个页面color存储起来
+        this.colors[this.currentIndex] = {
+          navBarBgColor: this.navBarBgColor,
+          navBarFontColor: this.navBarFontColor
+        }
+        // 将当前页面的color赋值上去
+        this.navBarFontColor = this.colors[index]?.navBarFontColor || '#FFFFFF'
+        this.navBarBgColor = this.colors[index]?.navBarBgColor || 'rgba(255, 255, 255, 0)'
+
+        // 想看页面的状态栏颜色为特殊颜色，这里单独设置
+        if (index == 1) {
+          setWindowStatusColor('#636363')
+        } else {
+          setWindowStatusColor(this.navBarFontColor)
+        }
         this.currentIndex = index
       })
       .barHeight(rvp(50) + getWindowBottomHeight()) // 设置 tab 导航栏的高度，默认 56, getWindowBottomHeight如果手机设备底部有距离，这里会进行添加

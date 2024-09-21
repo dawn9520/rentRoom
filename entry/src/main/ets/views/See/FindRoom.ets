@@ -1,5 +1,5 @@
 import { BORDER_RADIUS_S, SHADOW_RADIUS } from '../../constants/size'
-import { rvp } from '../../utils/responsive'
+import { rvp, getWindowTopHeight } from '../../utils/responsive'
 
 @Component
 export default struct FindRoom {
@@ -40,6 +40,6 @@ export default struct FindRoom {
         offsetX: 0,
         offsetY: 0
       })
-    }.margin({ top: rvp(49) }).alignItems(HorizontalAlign.Start).width('100%')
+    }.margin({ top: rvp(49) + getWindowTopHeight() }).alignItems(HorizontalAlign.Start).width('100%')
   }
 }

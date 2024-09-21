@@ -31,7 +31,8 @@ export default struct See {
   build() {
     ScrollContainer({
       navBuilder: this.navBuilder,
-      contentBuilder: this.contentBuilder
+      contentBuilder: this.contentBuilder,
+      notScroll: true
     })
 
   }

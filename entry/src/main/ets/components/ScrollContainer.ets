@@ -1,25 +1,20 @@
 import { IColor } from '../models/HomeData';
 import { getWindowTopHeight, rvp } from '../utils/responsive';
-import { window } from '@kit.ArkUI';
+import { setWindowStatusColor } from '../utils/method';
 
 @Component
 export default struct ScrollContainer {
+  @Prop notScroll?: boolean
   @BuilderParam contentBuilder: () => void = this.defaultBuilder
   @BuilderParam navBuilder: ($$: IColor) => void = this.defaultBuilder
   scrollY: number = 0;
-  @State bgColor: string = 'rgba(255, 255, 255, 0)'
-  @State fontColor: string = '#FFFFFF'
 
-  // 设置 window 状态栏颜色
-  setWindowStatusColor = async () => {
-    const windowClass = await window.getLastWindow(getContext())
-    windowClass.setWindowSystemBarProperties({
-      statusBarContentColor: this.fontColor,
-    })
-  }
+  // 这里使用StorageLink，和indexa中的颜色双向绑定，使得tab切换时状态栏颜色和页面需要的颜色对应
+  @StorageLink('navBarFontColor') bgColor: string = 'rgba(255, 255, 255, 0)'
+  @StorageLink('navBarBgColor') fontColor: string = '#FFFFFF'
 
   aboutToAppear(): void {
-    this.setWindowStatusColor()
+    setWindowStatusColor(this.fontColor)
   }
 
   @Builder
@@ -28,13 +23,16 @@ export default struct ScrollContainer {
 
   // 处理滚动
   handleScroll = (scrollX: number, scrollY: number) => {
+    if (this.notScroll) {
+      return
+    }
     // 更新并修正 scrollY 的值
     this.scrollY += scrollY;
     if (this.scrollY < 0) {
       this.scrollY = 0
     }
     this.calcColor();
-    this.setWindowStatusColor();
+    setWindowStatusColor(this.fontColor);
   }
   // 计算颜色
   calcColor = () => {
