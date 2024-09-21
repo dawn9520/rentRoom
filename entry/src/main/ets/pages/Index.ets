@@ -9,7 +9,7 @@ import { getWindowBottomHeight, rvp } from '../utils/responsive';
 @Component
 struct Index {
   // 当前 tab 高亮的下标
-  @State currentIndex: number = 0;
+  @State currentIndex: number = 1;
 
   // 生成 tab 的函数
   @Builder TabBuilder(index: number, text: string, icon: Resource, activeIcon: Resource) {
@@ -43,7 +43,7 @@ struct Index {
           My()
         }.tabBar(this.TabBuilder(4, '我的', $r('app.media.tabbar_my'), $r('app.media.tabbar_my_active')))
       }
-      .vertical(false)
+      .vertical(false) // 设置tab位置在底部
       .barMode(BarMode.Fixed) // 用于控制导航栏是否可以滚动，默认值为BarMode.Fixed
       .onChange((index: number) => {
         this.currentIndex = index
