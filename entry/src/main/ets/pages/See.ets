@@ -1,4 +1,5 @@
 import ScrollContainer from '../components//ScrollContainer'
+import NavBar from '../views/See/NavBar'
 
 import { PADDING } from '../constants/size'
 import { rvp } from '../utils/responsive'
@@ -7,6 +8,7 @@ import { rvp } from '../utils/responsive'
 export default struct See {
   @Builder
   navBuilder() {
+    NavBar()
   }
 
   @Builder
