@@ -3,6 +3,7 @@ import { IColor } from '../models/HomeData'
 
 import ScrollContainer from '../components/ScrollContainer'
 import NavBar from '../views/Discover/NavBar'
+import Bg from '../views/Discover/Bg'
 
 @Component
 export default struct Discover {
@@ -21,7 +22,9 @@ export default struct Discover {
 
   @Builder
   contentBuilder() {
-    Text('content').width('100%')
+    Stack() {
+      Bg()
+    }
   }
 
   build() {
