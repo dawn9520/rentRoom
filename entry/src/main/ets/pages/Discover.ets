@@ -1,7 +1,7 @@
 import { getDiscoverDataApi } from '../api/discover'
 import { IColor } from '../models/HomeData'
 import { getWindowTopHeight, rvp } from '../utils/responsive'
-import { IDanMuList, IPostZone } from '../models/DiscoverData'
+import { IDanMuList, IPostZone, IBenefits } from '../models/DiscoverData'
 import { PADDING } from '../constants/size'
 
 import ScrollContainer from '../components/ScrollContainer'
@@ -9,6 +9,7 @@ import NavBar from '../views/Discover/NavBar'
 import Bg from '../views/Discover/Bg'
 import BannerScroll from '../views/Discover/BannerScroll'
 import Ad from '../views/Discover/Ad'
+import Welfare from '../views/Discover/Welfare'
 
 @Component
 export default struct Discover {
@@ -24,6 +25,7 @@ export default struct Discover {
     },
     "contentBlockList": []
   }
+  @State benefits: IBenefits = []
 
 
   aboutToAppear(): void {
@@ -35,6 +37,7 @@ export default struct Discover {
     this.danMuList1 = discoverData.danMuList1
     this.danMuList2 = discoverData.danMuList2
     this.postZone = discoverData.postZone
+    this.benefits = discoverData.benefits
   }
 
   @Builder
@@ -52,10 +55,13 @@ export default struct Discover {
           BannerScroll({ bannerList: this.danMuList1 })
           BannerScroll({ bannerList: this.danMuList2 })
         }.width('100%').margin({ top: rvp(20) })
-        Ad({ postZone: this.postZone })
+        Column() {
+          Ad({ postZone: this.postZone })
+          Welfare({ benefits: this.benefits })
+        }.padding({ top: getWindowTopHeight(), left: rvp(PADDING), right: rvp(PADDING) })
       }
       .alignItems(HorizontalAlign.Start)
-      .padding({ top: getWindowTopHeight(), left: rvp(PADDING), right: rvp(PADDING) })
+      .padding({ top: getWindowTopHeight() })
       .width('100%')
     }.alignContent(Alignment.TopStart)
   }
@@ -66,6 +72,7 @@ export default struct Discover {
         this.contentBuilder()
       },
       navBuilder: this.navBuilder,
+      noDiscoloration: true
     })
   }
 }

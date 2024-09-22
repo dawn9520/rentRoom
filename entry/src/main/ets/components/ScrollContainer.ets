@@ -4,7 +4,7 @@ import { setWindowStatusColor } from '../utils/method';
 
 @Component
 export default struct ScrollContainer {
-  @Prop notScroll?: boolean
+  @Prop noDiscoloration?: boolean
   @BuilderParam contentBuilder: () => void = this.defaultBuilder
   @BuilderParam navBuilder: ($$: IColor) => void = this.defaultBuilder
   scrollY: number = 0;
@@ -23,9 +23,7 @@ export default struct ScrollContainer {
 
   // 处理滚动
   handleScroll = (scrollX: number, scrollY: number) => {
-    if (this.notScroll) {
-      return
-    }
+
     // 更新并修正 scrollY 的值
     this.scrollY += scrollY;
     if (this.scrollY < 0) {
@@ -38,10 +36,10 @@ export default struct ScrollContainer {
   calcColor = () => {
     if (this.scrollY > 10) {
       this.bgColor = 'rgba(255, 255, 255, 1)'
-      this.fontColor = '#000000'
+      this.fontColor = this.noDiscoloration ? '#636363' : '#000000'
     } else {
       this.bgColor = 'rgba(255, 255, 255, 0)'
-      this.fontColor = '#FFFFFF'
+      this.fontColor = this.noDiscoloration ? '#636363' : '#FFFFFF'
     }
   }
 

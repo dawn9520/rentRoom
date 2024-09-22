@@ -32,7 +32,7 @@ export default struct See {
     ScrollContainer({
       navBuilder: this.navBuilder,
       contentBuilder: this.contentBuilder,
-      notScroll: true
+      noDiscoloration: true
     })
 
   }

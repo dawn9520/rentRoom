@@ -63,7 +63,7 @@ struct Index {
         this.navBarBgColor = this.colors[index]?.navBarBgColor || 'rgba(255, 255, 255, 0)'
 
         // 想看页面的状态栏颜色为特殊颜色，这里单独设置
-        if (index == 1) {
+        if (index == 1 || index == 3) {
           setWindowStatusColor('#636363')
         } else {
           setWindowStatusColor(this.navBarFontColor)
