@@ -14,7 +14,7 @@ struct Index {
   @StorageLink('navBarFontColor') navBarBgColor: string = ''
 
   // 当前 tab 高亮的下标
-  @State currentIndex: number = 3;
+  @State currentIndex: number = 4;
   colors: IColors = []
 
   // 生成 tab 的函数
