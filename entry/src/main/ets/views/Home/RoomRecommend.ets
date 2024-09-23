@@ -4,6 +4,8 @@ import { getRoomRecommendListApi } from '../../api/home'
 import { BORDER_RADIUS, PADDING } from '../../constants/size'
 import { rvp } from '../../utils/responsive'
 
+import router from '@ohos.router'
+
 @Component
 export default struct RoomRecommend {
   // 获取推荐房源列表
@@ -18,6 +20,10 @@ export default struct RoomRecommend {
     this.roomRecommendDataSource = new RoomRecommendDataSource(roomRecommendList)
   }
 
+  goRentRoomList = () => {
+    router.pushUrl({ url: 'pages/RentRoom/RentRoomList' })
+  }
+
   // 头部导航
   @Builder
   RoomNav() {
@@ -30,7 +36,7 @@ export default struct RoomRecommend {
       Row({ space: rvp(6) }) {
         Text('更多推荐').fontColor($r('app.color.gray_second')).fontSize(rvp(12))
         Image($r('app.media.arrow_right')).width(rvp(4)).height(rvp(8))
-      }
+      }.onClick(this.goRentRoomList)
     }
     .width('100%')
     .height(rvp(67))
