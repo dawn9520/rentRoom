@@ -8,15 +8,14 @@ import WaterfallFlow from '../../views/RentRoomList/WaterfallFlow'
 @Component
 struct RentRoomList {
   build() {
-    Stack() {
-      Column() {
-        WaterfallFlow()
-      }.padding({ top: getWindowTopHeight() + rvp(88) })
-
-      Column() {
-        NavBar({ title: '租房列表' })
-        SearchFilter()
-      }.height('100%').padding({ top: getWindowTopHeight() })
-    }.height('100%').alignContent(Alignment.TopStart)
+    Column() {
+      Stack() {
+        Column() {
+          NavBar({ title: '租房列表' })
+          SearchFilter()
+        }.padding({ top: getWindowTopHeight() })
+      }.alignContent(Alignment.TopStart)
+      WaterfallFlow()
+    }.width('100%').height('100%')
   }
 }

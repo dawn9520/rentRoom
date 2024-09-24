@@ -9,9 +9,9 @@ export type IOrderType = "asc" | "desc"
 export interface IGetRentRoomListParams {
   "page": number
   "limit": number
-  "provinceId"?: string
-  "cityId"?: string
-  "districtId"?: string
+  "provinceCode"?: string
+  "cityCode"?: string
+  "districtCode"?: string
   "minRent"?: string
   "maxRent"?: string
   "paymentType"?: IPaymentType
