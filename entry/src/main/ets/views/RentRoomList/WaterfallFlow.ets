@@ -16,8 +16,8 @@ export default struct WaterfallFlow {
     "provinceCode": "",
     "cityCode": "",
     "districtCode": "",
-    "minRent": "",
-    "maxRent": "",
+    // "minRent": "",
+    // "maxRent": "",
     // "paymentType": "",
     // "orderBy": "",
     // "orderType": ""
@@ -47,12 +47,16 @@ export default struct WaterfallFlow {
 
   async getRentRoomList() {
     const res = await getRentRoomListApi(this.searchOptions)
-    this.roomRoomListDataSource.pushDataList(res.records)
+    // 首次数据加载或者是有搜索内容的数据加载时，需要重新加载所有数据
+    if (this.searchOptions.page === 1) {
+      this.roomRoomListDataSource.reloadDataList(res.records)
+    } else {
+      this.roomRoomListDataSource.pushDataList(res.records)
+    }
     this.total = res.total
   }
 
   loadMore = () => {
-    console.log(1111 + '')
     this.searchOptions.page++;
     this.getRentRoomList()
   }

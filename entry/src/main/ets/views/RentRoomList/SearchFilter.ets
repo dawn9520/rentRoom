@@ -10,6 +10,8 @@ import {
 } from '../../models/RentRoomData'
 import { rvp } from '../../utils/responsive'
 
+import { globalEmitter } from '../../utils/emitter'
+
 
 @Component
 export default struct SearchFilter {
@@ -22,6 +24,7 @@ export default struct SearchFilter {
   @State cityCode: string = '' // 市code
   @State districtCode: string = '' // 区code
 
+  // 3. 地区数据
   chooseSearchType(searchType: string) {
     console.log(searchType)
     this.currentSearchType = searchType
@@ -42,14 +45,14 @@ export default struct SearchFilter {
   async getCityList() {
     const cityList = await getCityListApi(this.provinceCode)
     this.cityList = cityList;
-    this.cityCode = this.cityCode || cityList[0].code;
+    this.cityCode = cityList[0].code || this.cityCode;
     this.getDistrictList()
   }
 
   async getDistrictList() {
     const districtList = await getDistrictListApi(this.cityCode)
     this.districtList = districtList
-    this.districtCode = this.districtCode || districtList[0].code;
+    this.districtCode = districtList[0].code || this.districtCode;
   }
 
   // 重置地区
@@ -62,6 +65,33 @@ export default struct SearchFilter {
   hidden = () => {
     this.currentSearchType = '';
   }
+
+
+
+  locationSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      provinceCode: this.provinceCode,
+      cityCode: this.cityCode,
+      districtCode: this.districtCode,
+    })
+    this.currentSearchType = ''
+    // this.locationClose()
+  }
+
+  // locationClose() {
+  //   this.currentSearchType = ''
+  //   if (this.locationData.isSearch) {
+  //     this.locationData.searchProvinceCode = this.locationData.provinceCode
+  //     this.locationData.searchCityCode = this.locationData.cityCode
+  //     this.locationData.searchDistrictCode = this.locationData.districtCode
+  //     this.locationData.searchDistrictName =
+  //       this.locationData.districtList.find(item => item.code === this.locationData.districtCode)?.name || ''
+  //   } else {
+  //     this.locationData.provinceCode = this.locationData.searchProvinceCode
+  //     this.locationData.cityCode = this.locationData.searchCityCode
+  //     this.locationData.districtCode = this.locationData.searchDistrictCode
+  //   }
+  // }
 
   @Builder
   LocationRender() {
@@ -136,9 +166,11 @@ export default struct SearchFilter {
 
     Row({ space: rvp(22) }) {
       Button('重置')
-        .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second')).onClick(this.resetLocation)
+        .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second'))
+        .onClick(this.resetLocation)
       Button('查看房源')
         .buttonStyles(rvp(211), '#67C0A8', $r('app.color.white'))
+        .onClick(this.locationSearch.bind(this))
     }.height(rvp(58)).width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
 
     Row() {
