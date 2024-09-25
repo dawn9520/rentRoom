@@ -4,6 +4,7 @@ import { ITagItem } from '../../models/RoomRecommendDataSource';
 
 import { BORDER_RADIUS } from '../../constants/size';
 import { rvp } from '../../utils/responsive';
+import { globalEmitter } from '../../utils/emitter';
 
 @Component
 export default struct WaterfallFlow {
@@ -24,6 +25,24 @@ export default struct WaterfallFlow {
 
   aboutToAppear() {
     this.getRentRoomList();
+    this.registerGlobalEmitter();
+  }
+
+  registerGlobalEmitter() {
+    globalEmitter.on('searchOptionsChange', async (searchOptions: Partial<IGetRentRoomListParams>) => {
+      this.searchOptions.page = 1;
+      this.searchOptions.limit = 10;
+      if (searchOptions.provinceCode) {
+        this.searchOptions.provinceCode = searchOptions.provinceCode;
+      }
+      if (searchOptions.cityCode) {
+        this.searchOptions.cityCode = searchOptions.cityCode;
+      }
+      if (searchOptions.districtCode) {
+        this.searchOptions.districtCode = searchOptions.districtCode;
+      }
+      this.getRentRoomList()
+    })
   }
 
   async getRentRoomList() {
@@ -33,6 +52,7 @@ export default struct WaterfallFlow {
   }
 
   loadMore = () => {
+    console.log(1111 + '')
     this.searchOptions.page++;
     this.getRentRoomList()
   }

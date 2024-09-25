@@ -40,11 +40,11 @@ export type IRentRoomList = IRentRoomItem[]
 
 
 export class RentRoomListDataSource implements IDataSource {
-  private listeners: DataChangeListener[] = [];
   data: IRentRoomList = [];
+  private listeners: DataChangeListener[] = [];
 
   constructor(list: IRentRoomList) {
-    this.data = list;
+    this.pushDataList(list);
   }
 
   public totalCount(): number {
@@ -58,7 +58,7 @@ export class RentRoomListDataSource implements IDataSource {
   // 增加数据
   public pushData(item: IRentRoomItem) {
     this.data.push(item);
-    this.notifyDataAdd(this.data.length - 1)
+    this.notifyDataAdd(this.data.length - 1);
   }
 
   // 增加数据列表
@@ -116,4 +116,36 @@ export class RentRoomListDataSource implements IDataSource {
       listener.onDataDelete(index);
     })
   }
+}
+
+export interface IProvinceItem {
+  code: string;
+  name: string;
+}
+
+export type IProvinceList = IProvinceItem[]
+
+export interface ICityItem {
+  "code": string
+  "name": string
+  "provinceCode": string
+}
+
+export type ICityList = ICityItem[]
+
+export interface IDistrictItem {
+  "code": string
+  "name": string
+  "cityCode": string
+  "provinceCode": string
+}
+
+export type IDistrictList = IDistrictItem[]
+
+export interface GetCityListParams {
+  provinceCode: string
+}
+
+export interface GetDistrictListParams {
+  cityCode: string
 }
