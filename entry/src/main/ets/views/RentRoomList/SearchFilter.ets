@@ -7,9 +7,9 @@ import {
   IDistrictList,
   IProvinceItem,
   IProvinceList,
-  IRentPriceItem,
-  IRentPriceList
+  IRentPriceItem
 } from '../../models/RentRoomData'
+import { dataAny } from '../../models/RentRoomData/dataAny'
 import { rvp } from '../../utils/responsive'
 
 import { globalEmitter } from '../../utils/emitter'
@@ -27,63 +27,69 @@ export default struct SearchFilter {
   @State cityCode: string = '' // 市code
   @State districtCode: string = '' // 区code
   // 租金数据设置
-  @State rentPriceList: IRentPriceList = [
-    {
-      id: 1,
-      minRent: '0',
-      maxRent: '0',
-      text: '不限'
-    },
-    {
-      id: 2,
-      minRent: '0',
-      maxRent: '1500',
-      text: '1500元以下'
-    },
-    {
-      id: 3,
-      minRent: '1500',
-      maxRent: '2500',
-      text: '1500-2500元'
-    },
-    {
-      id: 4,
-      minRent: '2500',
-      maxRent: '3500',
-      text: '2500-3500元'
-    },
-    {
-      id: 5,
-      minRent: '3500',
-      maxRent: '4500',
-      text: '3500-4500元'
-    },
-    {
-      id: 6,
-      minRent: '4500',
-      maxRent: '6000',
-      text: '4500-6000元'
-    },
-    {
-      id: 7,
-      minRent: '6000',
-      maxRent: '8000',
-      text: '6000-8000元'
-    },
-    {
-      id: 8,
-      minRent: '8000',
-      maxRent: '10000',
-      text: '8000-10000元'
-    },
-    {
-      id: 9,
-      minRent: '10000',
-      maxRent: '0',
-      text: '10000元以上'
-    }
-  ]
+  @State rentPriceData: dataAny = {
+    rentPriceList: [
+      {
+        id: 1,
+        minRent: '0',
+        maxRent: '0',
+        text: '不限'
+      },
+      {
+        id: 2,
+        minRent: '0',
+        maxRent: '1500',
+        text: '1500元以下'
+      },
+      {
+        id: 3,
+        minRent: '1500',
+        maxRent: '2500',
+        text: '1500-2500元'
+      },
+      {
+        id: 4,
+        minRent: '2500',
+        maxRent: '3500',
+        text: '2500-3500元'
+      },
+      {
+        id: 5,
+        minRent: '3500',
+        maxRent: '4500',
+        text: '3500-4500元'
+      },
+      {
+        id: 6,
+        minRent: '4500',
+        maxRent: '6000',
+        text: '4500-6000元'
+      },
+      {
+        id: 7,
+        minRent: '6000',
+        maxRent: '8000',
+        text: '6000-8000元'
+      },
+      {
+        id: 8,
+        minRent: '8000',
+        maxRent: '10000',
+        text: '8000-10000元'
+      },
+      {
+        id: 9,
+        minRent: '10000',
+        maxRent: '0',
+        text: '10000元以上'
+      }
+    ],
+    rentPrice: {},
+    isSearch: false,
+    searchRentPrice: {}
+  }
 
+  // -------------地区搜索 方法
   // 地区数据 操作
   chooseSearchType(searchType: string) {
     console.log(searchType)
@@ -135,6 +141,37 @@ export default struct SearchFilter {
       districtCode: this.districtCode,
     })
     this.hidden()
+  }
+
+  // -------------租金搜索 方法
+  // 租金价格更改
+  handleRentPriceChange(rentPrice: IRentPriceItem) {
+    this.rentPriceData.rentPrice = rentPrice
+  }
+
+  // 租金价格搜索
+  rentPriceSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      minRent: this.rentPriceData.rentPrice.minRent,
+      maxRent: this.rentPriceData.rentPrice.maxRent,
+    })
+    this.rentPriceData.isSearch = true;
+    this.rentPriceClose()
+  }
+
+  // 租金价格关闭
+  rentPriceClose() {
+    this.hidden()
+    if (this.rentPriceData.isSearch) {
+      this.rentPriceData.searchRentPrice = this.rentPriceData.rentPrice
+    } else {
+      this.rentPriceData.rentPrice = this.rentPriceData.searchRentPrice
+    }
+  }
+
+  // 租金价格重置
+  rentPriceReset() {
+    this.rentPriceData.rentPrice = {}
   }
 
   // 地区搜索 组件
@@ -227,10 +264,11 @@ export default struct SearchFilter {
   RentPriceRender() {
     Column() {
       Grid() {
-        ForEach(this.rentPriceList, (rentPrice: IRentPriceItem) => {
+        ForEach(this.rentPriceData.rentPriceList, (rentPrice: IRentPriceItem) => {
           GridItem() {
             Text(rentPrice.text)
-              .textStyles(false)
+              .textStyles(this.rentPriceData.rentPrice.id === rentPrice.id)
+              .onClick(this.handleRentPriceChange.bind(this, rentPrice))
           }
         }, (rentPrice: IRentPriceItem) => rentPrice.id + '')
       }
@@ -241,8 +279,10 @@ export default struct SearchFilter {
       Row({ space: rvp(22) }) {
         Button('重置')
           .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second'))
+          .onClick(this.rentPriceReset.bind(this))
         Button('查看房源')
           .buttonStyles(rvp(211), '#67C0A8', $r('app.color.white'))
+          .onClick(this.rentPriceSearch.bind(this))
       }.height(rvp(58)).width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
     }
     .height(rvp(202))

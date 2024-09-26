@@ -157,4 +157,9 @@ export interface IRentPriceItem {
   text: string;
 }
 
-export type IRentPriceList = IRentPriceItem[]
+export interface IRentPriceList {
+  rentPriceList: IRentPriceItem[]
+  rentPrice: object
+  isSearch: boolean
+  searchRentPrice: object
+}

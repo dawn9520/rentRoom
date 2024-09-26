@@ -16,8 +16,8 @@ export default struct WaterfallFlow {
     "provinceCode": "",
     "cityCode": "",
     "districtCode": "",
-    // "minRent": "",
-    // "maxRent": "",
+    "minRent": "",
+    "maxRent": "",
     // "paymentType": "",
     // "orderBy": "",
     // "orderType": ""
@@ -40,6 +40,12 @@ export default struct WaterfallFlow {
       }
       if (searchOptions.districtCode) {
         this.searchOptions.districtCode = searchOptions.districtCode;
+      }
+      if (searchOptions.minRent) {
+        this.searchOptions.minRent = searchOptions.minRent;
+      }
+      if (searchOptions.maxRent) {
+        this.searchOptions.maxRent = searchOptions.maxRent;
       }
       this.getRentRoomList()
     })
