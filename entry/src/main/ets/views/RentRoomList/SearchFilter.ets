@@ -9,7 +9,7 @@ import {
   IProvinceList,
   IRentPriceItem
 } from '../../models/RentRoomData'
-import { dataAny } from '../../models/RentRoomData/dataAny'
+import { PaymentTypeDataAny, RentPriceDataAny } from '../../models/RentRoomData/dataAny'
 import { rvp } from '../../utils/responsive'
 
 import { globalEmitter } from '../../utils/emitter'
@@ -28,7 +28,7 @@ export default struct SearchFilter {
   @State districtCode: string = '' // 区code
   @State searchDistrictName: string = '' // 当前选择地区的名字
   // 租金数据设置
-  @State rentPriceData: dataAny = {
+  @State rentPriceData: RentPriceDataAny = {
     rentPriceList: [
       {
         id: 1,
@@ -89,15 +89,26 @@ export default struct SearchFilter {
     isSearch: false,
     searchRentPrice: {}
   }
+  // 付款方式数据设置
+  @State paymentTypeData: PaymentTypeDataAny = {
+    paymentTypeList: ['月付', '季付', '半年付', '年付'],
+    isSearch: false,
+    paymentType: '',
+    searchPaymentType: ''
+  }
 
   // 搜索条件显示
   getSearchTypeName(item: string): string {
-    if (item === '地区') {
-      return this.searchDistrictName || item
-    } else if (item === '租金') {
-      return this.rentPriceData.searchRentPrice.text || item
+    switch (item) {
+      case '地区':
+        return this.searchDistrictName || item
+      case '地区':
+        return this.rentPriceData.searchRentPrice.text || item
+      case '付款方式':
+        return this.paymentTypeData.paymentType || item
+      default:
+        return item
     }
-    return item
   }
 
   // -------------地区搜索 方法
@@ -185,6 +196,36 @@ export default struct SearchFilter {
   // 租金价格重置
   rentPriceReset() {
     this.rentPriceData.rentPrice = {}
+  }
+
+  // -------------付款方式搜索 方法
+  // 付款类型更改
+  handlePaymentTypeChange(paymentType: string) {
+    this.paymentTypeData.paymentType = paymentType
+  }
+
+  // 付款类型搜索
+  paymentTypeSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      paymentType: this.paymentTypeData.searchPaymentType
+    })
+    this.paymentTypeData.isSearch = true;
+    this.paymentTypeClose()
+  }
+
+  // 付款类型搜索关闭
+  paymentTypeClose() {
+    this.hidden()
+    if (this.paymentTypeData.isSearch) {
+      this.paymentTypeData.searchPaymentType = this.paymentTypeData.paymentType
+    } else {
+      this.paymentTypeData.paymentType = this.paymentTypeData.searchPaymentType
+    }
+  }
+
+  // 付款类型重置
+  paymentTypeReset() {
+    this.paymentTypeData.paymentType = ''
   }
 
   // 地区搜索 组件
@@ -307,9 +348,39 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.hidden)
   }
 
+  // 付款方式搜索 组件
   @Builder
   PaymentTypeRender() {
-    Text('PaymentTypeRender')
+    Column() {
+      Grid() {
+        ForEach(this.paymentTypeData.paymentTypeList, (paymentType: string) => {
+          GridItem() {
+            Text(paymentType)
+              .textStyles(this.paymentTypeData.paymentType === paymentType)
+              .onClick(this.handlePaymentTypeChange.bind(this, paymentType))
+          }
+        }, (paymentType: string) => paymentType)
+      }
+      .columnsTemplate('1fr 1fr 1fr')
+      .rowsTemplate('1fr 1fr 1fr')
+      .height(rvp(100))
+
+      Row({ space: rvp(22) }) {
+        Button('重置')
+          .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second'))
+          .onClick(this.paymentTypeReset.bind(this))
+        Button('查看房源')
+          .buttonStyles(rvp(211), '#67C0A8', $r('app.color.white'))
+          .onClick(this.paymentTypeSearch.bind(this))
+      }.height(rvp(58)).width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
+    }
+    .height(rvp(158))
+    .width('100%')
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: rvp(PADDING), right: rvp(PADDING) })
+
+    Row() {
+    }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.paymentTypeClose.bind(this))
   }
 
   @Builder

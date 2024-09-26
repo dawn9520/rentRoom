@@ -14,7 +14,7 @@ export interface IGetRentRoomListParams {
   "districtCode"?: string
   "minRent"?: string
   "maxRent"?: string
-  "paymentType"?: IPaymentType
+  "paymentType"?: string
   "orderBy"?: IOrderBy,
   "orderType"?: IOrderType
 }
