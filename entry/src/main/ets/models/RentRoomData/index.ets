@@ -149,3 +149,12 @@ export interface GetCityListParams {
 export interface GetDistrictListParams {
   cityCode: string
 }
+
+export interface IRentPriceItem {
+  id: number;
+  minRent: string;
+  maxRent: string;
+  text: string;
+}
+
+export type IRentPriceList = IRentPriceItem[]

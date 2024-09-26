@@ -1,12 +1,14 @@
 import { getCityListApi, getDistrictListApi, getProvinceListApi } from '../../api/rentRoom'
-import { BORDER_RADIUS_S } from '../../constants/size'
+import { BORDER_RADIUS_S, PADDING } from '../../constants/size'
 import {
   ICityItem,
   ICityList,
   IDistrictItem,
   IDistrictList,
   IProvinceItem,
-  IProvinceList
+  IProvinceList,
+  IRentPriceItem,
+  IRentPriceList
 } from '../../models/RentRoomData'
 import { rvp } from '../../utils/responsive'
 
@@ -16,6 +18,7 @@ import { globalEmitter } from '../../utils/emitter'
 @Component
 export default struct SearchFilter {
   @State searchTypeList: string[] = ['地区', '租金', '付款方式', '排序']
+  // 地区数据设置
   @State currentSearchType: string = ''
   @State provinceList: IProvinceList = [] // 省
   @State cityList: ICityList = [] // 市
@@ -23,8 +26,65 @@ export default struct SearchFilter {
   @State provinceCode: string = '' // 省code
   @State cityCode: string = '' // 市code
   @State districtCode: string = '' // 区code
+  // 租金数据设置
+  @State rentPriceList: IRentPriceList = [
+    {
+      id: 1,
+      minRent: '0',
+      maxRent: '0',
+      text: '不限'
+    },
+    {
+      id: 2,
+      minRent: '0',
+      maxRent: '1500',
+      text: '1500元以下'
+    },
+    {
+      id: 3,
+      minRent: '1500',
+      maxRent: '2500',
+      text: '1500-2500元'
+    },
+    {
+      id: 4,
+      minRent: '2500',
+      maxRent: '3500',
+      text: '2500-3500元'
+    },
+    {
+      id: 5,
+      minRent: '3500',
+      maxRent: '4500',
+      text: '3500-4500元'
+    },
+    {
+      id: 6,
+      minRent: '4500',
+      maxRent: '6000',
+      text: '4500-6000元'
+    },
+    {
+      id: 7,
+      minRent: '6000',
+      maxRent: '8000',
+      text: '6000-8000元'
+    },
+    {
+      id: 8,
+      minRent: '8000',
+      maxRent: '10000',
+      text: '8000-10000元'
+    },
+    {
+      id: 9,
+      minRent: '10000',
+      maxRent: '0',
+      text: '10000元以上'
+    }
+  ]
 
-  // 3. 地区数据
+  // 地区数据 操作
   chooseSearchType(searchType: string) {
     console.log(searchType)
     this.currentSearchType = searchType
@@ -34,7 +94,7 @@ export default struct SearchFilter {
     }
   }
 
-  // 获取省市区
+  // 以下3个方法为获取 省/市/区 操作
   async getProvinceList() {
     const provinceList = await getProvinceListApi()
     this.provinceList = provinceList
@@ -62,35 +122,22 @@ export default struct SearchFilter {
     this.districtCode = '';
     this.getCityList()
   }
+  // 关闭搜索
   hidden = () => {
     this.currentSearchType = '';
   }
 
+  // 触发房源数据查询，关闭地区搜索 组件
   locationSearch() {
     globalEmitter.emit('searchOptionsChange', {
       provinceCode: this.provinceCode,
       cityCode: this.cityCode,
       districtCode: this.districtCode,
     })
-    this.currentSearchType = ''
-    // this.locationClose()
+    this.hidden()
   }
 
-  // locationClose() {
-  //   this.currentSearchType = ''
-  //   if (this.locationData.isSearch) {
-  //     this.locationData.searchProvinceCode = this.locationData.provinceCode
-  //     this.locationData.searchCityCode = this.locationData.cityCode
-  //     this.locationData.searchDistrictCode = this.locationData.districtCode
-  //     this.locationData.searchDistrictName =
-  //       this.locationData.districtList.find(item => item.code === this.locationData.districtCode)?.name || ''
-  //   } else {
-  //     this.locationData.provinceCode = this.locationData.searchProvinceCode
-  //     this.locationData.cityCode = this.locationData.searchCityCode
-  //     this.locationData.districtCode = this.locationData.searchDistrictCode
-  //   }
-  // }
-
+  // 地区搜索 组件
   @Builder
   LocationRender() {
     Row() {
@@ -175,9 +222,36 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.hidden)
   }
 
+  // 租金搜索 组件
   @Builder
   RentPriceRender() {
-    Text('RentPriceRender')
+    Column() {
+      Grid() {
+        ForEach(this.rentPriceList, (rentPrice: IRentPriceItem) => {
+          GridItem() {
+            Text(rentPrice.text)
+              .textStyles(false)
+          }
+        }, (rentPrice: IRentPriceItem) => rentPrice.id + '')
+      }
+      .columnsTemplate('1fr 1fr 1fr')
+      .rowsTemplate('1fr 1fr 1fr')
+      .height(rvp(194 - 58))
+
+      Row({ space: rvp(22) }) {
+        Button('重置')
+          .buttonStyles(rvp(95), '#F0F0F0', $r('app.color.gray_second'))
+        Button('查看房源')
+          .buttonStyles(rvp(211), '#67C0A8', $r('app.color.white'))
+      }.height(rvp(58)).width('100%').backgroundColor($r('app.color.white')).justifyContent(FlexAlign.Center)
+    }
+    .height(rvp(202))
+    .width('100%')
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: rvp(PADDING), right: rvp(PADDING) })
+
+    Row() {
+    }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.hidden)
   }
 
   @Builder
@@ -206,10 +280,10 @@ export default struct SearchFilter {
 
             if (this.currentSearchType === item) {
               Image($r('app.media.arrow_down_3_active'))
-                .width(rvp(12)).height(rvp(12)).objectFit(ImageFit.Fill)
+                .imageStyles()
             } else {
               Image($r('app.media.arrow_down_3'))
-                .width(rvp(6)).height(rvp(3)).objectFit(ImageFit.Fill)
+                .imageStyles()
             }
           }.width('25%').height('100%').justifyContent(FlexAlign.Center).onClick(() => {
             this.chooseSearchType(item)
@@ -237,6 +311,10 @@ export default struct SearchFilter {
   }
 }
 
+@Extend(Image)
+function imageStyles() {
+  .width(rvp(12)).height(rvp(12)).objectFit(ImageFit.Fill)
+}
 
 @Extend(Button)
 function buttonStyles(width: number, bgColor: string | Resource, fontColor: string | Resource) {
@@ -247,4 +325,15 @@ function buttonStyles(width: number, bgColor: string | Resource, fontColor: stri
   .fontSize(rvp(12))
   .backgroundColor(bgColor)
   .fontColor(fontColor)
+}
+
+@Extend(Text)
+function textStyles(active: boolean) {
+  .fontSize(rvp(12))
+  .fontColor(active ? $r('app.color.white') : $r('app.color.gray_second'))
+  .width(rvp(94))
+  .height(rvp(26))
+  .backgroundColor(active ? '#67C0A8' : $r('app.color.bg_gray'))
+  .borderRadius(rvp(BORDER_RADIUS_S))
+  .textAlign(TextAlign.Center)
 }
