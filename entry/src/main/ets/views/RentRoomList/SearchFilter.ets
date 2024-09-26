@@ -198,7 +198,7 @@ export default struct SearchFilter {
     this.provinceCode = this.provinceList[0].code;
     this.cityCode = '';
     this.districtCode = '';
-    this.searchDistrictName = '';
+    // this.searchDistrictName = '';
     this.getCityList()
   }
   // 关闭搜索
@@ -213,7 +213,7 @@ export default struct SearchFilter {
       cityCode: this.cityCode,
       districtCode: this.districtCode,
     })
-    // this.searchDistrictName = this.districtList?.find(item => item?.code === this.districtCode)?.name || ''
+    this.searchDistrictName = this.districtList?.find(item => item?.code === this.districtCode)?.name || ''
     this.hidden()
   }
 
