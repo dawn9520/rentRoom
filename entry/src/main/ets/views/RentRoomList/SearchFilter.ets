@@ -26,6 +26,7 @@ export default struct SearchFilter {
   @State provinceCode: string = '' // 省code
   @State cityCode: string = '' // 市code
   @State districtCode: string = '' // 区code
+  @State searchDistrictName: string = '' // 当前选择地区的名字
   // 租金数据设置
   @State rentPriceData: dataAny = {
     rentPriceList: [
@@ -89,6 +90,16 @@ export default struct SearchFilter {
     searchRentPrice: {}
   }
 
+  // 搜索条件显示
+  getSearchTypeName(item: string): string {
+    if (item === '地区') {
+      return this.searchDistrictName || item
+    } else if (item === '租金') {
+      return this.rentPriceData.searchRentPrice.text || item
+    }
+    return item
+  }
+
   // -------------地区搜索 方法
   // 地区数据 操作
   chooseSearchType(searchType: string) {
@@ -126,6 +137,7 @@ export default struct SearchFilter {
     this.provinceCode = this.provinceList[0].code;
     this.cityCode = '';
     this.districtCode = '';
+    this.searchDistrictName = '';
     this.getCityList()
   }
   // 关闭搜索
@@ -140,6 +152,7 @@ export default struct SearchFilter {
       cityCode: this.cityCode,
       districtCode: this.districtCode,
     })
+    this.searchDistrictName = this.districtList?.find(item => item?.code === this.districtCode)?.name || ''
     this.hidden()
   }
 
@@ -309,7 +322,7 @@ export default struct SearchFilter {
       Row() {
         ForEach(this.searchTypeList, (item: string) => {
           Row({ space: rvp(6) }) {
-            Text(item)
+            Text(this.getSearchTypeName(item))
               .fontSize(rvp(12))
               .fontColor(this.currentSearchType === item ? '#67C0A8' : $r('app.color.black'))
               .maxLines(1)
