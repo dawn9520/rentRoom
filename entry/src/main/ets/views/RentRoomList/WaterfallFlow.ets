@@ -169,5 +169,6 @@ export default struct WaterfallFlow {
     .layoutDirection(FlexDirection.Column)
     .padding({ left: rvp(10), right: rvp(10), top: rvp(10) })
     .onReachEnd(this.loadMore)
+    .margin({ top: rvp(44 + 44) })
   }
 }

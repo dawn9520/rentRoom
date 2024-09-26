@@ -66,8 +66,6 @@ export default struct SearchFilter {
     this.currentSearchType = '';
   }
 
-
-
   locationSearch() {
     globalEmitter.emit('searchOptionsChange', {
       provinceCode: this.provinceCode,
@@ -217,7 +215,11 @@ export default struct SearchFilter {
             this.chooseSearchType(item)
           })
         }, (item: string) => item)
-      }.width('100%').height(rvp(44)).justifyContent(FlexAlign.SpaceBetween)
+      }
+      .width('100%')
+      .height(rvp(44))
+      .justifyContent(FlexAlign.SpaceBetween)
+      .margin({ top: rvp(44) })
 
       if (this.currentSearchType === '地区') {
         this.LocationRender()
