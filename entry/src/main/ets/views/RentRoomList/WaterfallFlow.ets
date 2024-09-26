@@ -19,8 +19,8 @@ export default struct WaterfallFlow {
     "minRent": "",
     "maxRent": "",
     "paymentType": "",
-    // "orderBy": "",
-    // "orderType": ""
+    "orderBy": "",
+    "orderType": ""
   }
 
   aboutToAppear() {
@@ -49,6 +49,12 @@ export default struct WaterfallFlow {
       }
       if (searchOptions.paymentType) {
         this.searchOptions.paymentType = searchOptions.paymentType;
+      }
+      if (searchOptions.orderBy) {
+        this.searchOptions.orderBy = searchOptions.orderBy;
+      }
+      if (searchOptions.orderType) {
+        this.searchOptions.orderType = searchOptions.orderType;
       }
       this.getRentRoomList()
     })

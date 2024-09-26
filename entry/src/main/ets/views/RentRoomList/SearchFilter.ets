@@ -1,15 +1,16 @@
 import { getCityListApi, getDistrictListApi, getProvinceListApi } from '../../api/rentRoom'
 import { BORDER_RADIUS_S, PADDING } from '../../constants/size'
 import {
-  ICityItem,
-  ICityList,
-  IDistrictItem,
-  IDistrictList,
-  IProvinceItem,
-  IProvinceList,
-  IRentPriceItem
+    ICityItem,
+    ICityList,
+    IDistrictItem,
+    IDistrictList,
+    IProvinceItem,
+    IProvinceList,
+    IRentPriceItem,
+    ISortItem
 } from '../../models/RentRoomData'
-import { PaymentTypeDataAny, RentPriceDataAny } from '../../models/RentRoomData/dataAny'
+import { PaymentTypeDataAny, RentPriceDataAny, SortDataAny } from '../../models/RentRoomData/dataAny'
 import { rvp } from '../../utils/responsive'
 
 import { globalEmitter } from '../../utils/emitter'
@@ -96,16 +97,65 @@ export default struct SearchFilter {
     paymentType: '',
     searchPaymentType: ''
   }
+  // 排序数据设置
+  @State sortData: SortDataAny = {
+    sortList: [
+      {
+        id: 1,
+        icon: $r('app.media.sort'),
+        text: '综合排序',
+        orderBy: '',
+        orderType: ''
+      },
+      {
+        id: 2,
+        icon: $r('app.media.rent'),
+        text: '价格从低到高',
+        orderBy: 'price',
+        orderType: 'asc'
+      },
+      {
+        id: 3,
+        icon: $r('app.media.rent'),
+        text: '价格从高到低',
+        orderBy: 'price',
+        orderType: 'desc'
+      },
+      {
+        id: 4,
+        icon: $r('app.media.area'),
+        text: '面积从大到小',
+        orderBy: 'area',
+        orderType: 'desc'
+      },
+      {
+        id: 5,
+        icon: $r('app.media.area'),
+        text: '面积从小到大',
+        orderBy: 'area',
+        orderType: 'asc'
+      },
+    ],
+    sort: {
+      id: 1,
+      icon: $r('app.media.sort'),
+      text: '综合排序',
+      orderBy: '',
+      orderType: ''
+    },
+  }
 
   // 搜索条件显示
   getSearchTypeName(item: string): string {
     switch (item) {
       case '地区':
         return this.searchDistrictName || item
-      case '地区':
+      case '租金':
         return this.rentPriceData.searchRentPrice.text || item
       case '付款方式':
         return this.paymentTypeData.paymentType || item
+      case '排序':
+        return this.sortData.sort.text || item
       default:
         return item
     }
@@ -163,7 +213,7 @@ export default struct SearchFilter {
       cityCode: this.cityCode,
       districtCode: this.districtCode,
     })
-    this.searchDistrictName = this.districtList?.find(item => item?.code === this.districtCode)?.name || ''
+    // this.searchDistrictName = this.districtList?.find(item => item?.code === this.districtCode)?.name || ''
     this.hidden()
   }
 
@@ -226,6 +276,34 @@ export default struct SearchFilter {
   // 付款类型重置
   paymentTypeReset() {
     this.paymentTypeData.paymentType = ''
+  }
+
+  // -------------付款方式搜索 方法
+  handleSortChange(sort: ISortItem) {
+    this.sortData.sort = sort
+    this.sortSearch()
+  }
+
+  sortSearch() {
+    globalEmitter.emit('searchOptionsChange', {
+      orderBy: this.sortData.sort.orderBy,
+      orderType: this.sortData.sort.orderType,
+    })
+    this.sortClose()
+  }
+
+  sortClose() {
+    this.currentSearchType = ''
+  }
+
+  sortReset() {
+    this.sortData.sort = {
+      id: 1,
+      icon: $r('app.media.sort'),
+      text: '综合排序',
+      orderBy: '',
+      orderType: ''
+    }
   }
 
   // 地区搜索 组件
@@ -383,9 +461,29 @@ export default struct SearchFilter {
     }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.paymentTypeClose.bind(this))
   }
 
+  // 排序搜索 组件
   @Builder
   SortRender() {
-    Text('SortRender')
+    Column() {
+      Column() {
+        ForEach(this.sortData.sortList, (sort: ISortItem) => {
+          Row({ space: rvp(8) }) {
+            Image(sort.icon).width(rvp(16))
+            Text(sort.text)
+              .fontSize(rvp(12))
+              .fontColor(this.sortData.sort.id === sort.id ? '#67C0A8' : $r('app.color.gray_second'))
+          }.height(rvp(34)).onClick(this.handleSortChange.bind(this, sort))
+        }, (sort: ISortItem) => sort.id + '')
+      }.padding({ left: rvp(20), top: rvp(8), bottom: rvp(16) }).alignItems(HorizontalAlign.Start)
+    }
+    .width('100%')
+    .backgroundColor($r('app.color.white'))
+    .padding({ left: rvp(PADDING), right: rvp(PADDING) })
+    .alignItems(HorizontalAlign.Start)
+
+
+    Row() {
+    }.width('100%').layoutWeight(1).backgroundColor('rgba(0, 0, 0, 0.7)').onClick(this.sortClose.bind(this))
   }
 
   build() {

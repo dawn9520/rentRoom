@@ -5,9 +5,26 @@ export interface RentPriceDataAny {
   searchRentPrice: any
 }
 
-export interface PaymentTypeDataAny  {
+export interface PaymentTypeDataAny {
   paymentTypeList: string[]
   isSearch: boolean
   paymentType: string
   searchPaymentType: string
+}
+
+export interface SortDataAny {
+  sortList: {
+    id: number
+    icon: any
+    text: string
+    orderBy: string
+    orderType: string
+  }[]
+  sort: {
+    id: number
+    icon: any
+    text: string
+    orderBy: string
+    orderType: string
+  }
 }

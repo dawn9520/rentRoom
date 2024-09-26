@@ -15,8 +15,8 @@ export interface IGetRentRoomListParams {
   "minRent"?: string
   "maxRent"?: string
   "paymentType"?: string
-  "orderBy"?: IOrderBy,
-  "orderType"?: IOrderType
+  "orderBy"?: string,
+  "orderType"?: string
 }
 
 export interface IGetRentRoomListResponse {
@@ -163,3 +163,13 @@ export interface IRentPriceList {
   isSearch: boolean
   searchRentPrice: object
 }
+
+export interface ISortItem {
+  id: number;
+  icon: Resource;
+  text: string;
+  orderBy: IOrderBy;
+  orderType: IOrderType;
+}
+
+export type ISortList = ISortItem[]
