@@ -19,12 +19,11 @@ export default struct RentRoomDetail {
   async getRentRoomDetail() {
     const id = (router.getParams() as IRentRoomDetailParams).id
     this.room = await getRentRoomDetailApi(id)
-    console.log('----this.room', JSON.stringify(this.room))
   }
 
   @Builder
   NavBarRender() {
-    NavBar()
+    NavBar({ title: this.room.houseTitle })
   }
 
   @Builder
@@ -34,8 +33,12 @@ export default struct RentRoomDetail {
   build() {
     Column() {
       ScrollContainer({
-        navBuilder: this.NavBarRender,
-        contentBuilder: this.ContentRender,
+        navBuilder: () => {
+          this.NavBarRender()
+        },
+        contentBuilder: () => {
+          this.ContentRender()
+        },
       })
     }.height('100%')
   }

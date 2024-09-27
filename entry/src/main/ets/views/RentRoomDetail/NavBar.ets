@@ -6,6 +6,7 @@ import { rvp } from '../../utils/responsive'
 export default struct NavBar {
   @StorageProp('navBarBgColor') navBarBgColor: string = ''
   @StorageProp('navBarFontColor') navBarFontColor: string = ''
+  @Prop title: string
 
   build() {
     Row() {
@@ -13,7 +14,7 @@ export default struct NavBar {
         Image($r('app.media.back')).width(rvp(24)).onClick(() => {
           router.back()
         })
-        Text('合租· 朝阳喜瑞公寓-主卧带卫生间').fontSize(rvp(12))
+        Text(this.title).fontSize(rvp(12))
       }
 
       Image($r('app.media.share')).width(rvp(20)).height(rvp(20)).fillColor($r('app.color.black'))
