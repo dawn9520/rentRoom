@@ -23,6 +23,15 @@ export default struct RoomRecommend {
   goRentRoomList = () => {
     router.pushUrl({ url: 'pages/RentRoom/RentRoomList' })
   }
+  // 跳转租房详情
+  goRentRoomDetail = (id: string) => {
+    router.pushUrl({
+      url: 'pages/RentRoom/RentRoomDetail',
+      params: {
+        id
+      }
+    })
+  }
 
   // 头部导航
   @Builder
@@ -92,6 +101,7 @@ export default struct RoomRecommend {
                   }.width('100%').margin({ top: rvp(9) })
                 }.padding(rvp(12)).alignItems(HorizontalAlign.Start).height(rvp(91))
               }.width('100%')
+
               // 图片灰色遮罩图片
               Image($r('app.media.room_text_bg')).width('100%').height(rvp(120))
               // 位置信息
@@ -100,7 +110,7 @@ export default struct RoomRecommend {
                 Text(room.address).fontSize(rvp(12)).fontColor($r('app.color.white'))
               }.margin({ left: rvp(8), top: rvp(99) })
             }.alignContent(Alignment.TopStart).backgroundColor($r('app.color.white'))
-          }.height(rvp(210))
+          }.height(rvp(210)).onClick(() => this.goRentRoomDetail(room.id))
         }, (room: IRoomRecommendItem) => room.id)
       }
       .columnsTemplate('1fr 1fr') // 竖直方向两列排布

@@ -8,6 +8,8 @@ import { globalEmitter } from '../../utils/emitter';
 
 import Empty from '../../components/Empty';
 
+import router from '@ohos.router';
+
 @Component
 export default struct WaterfallFlow {
   @State roomRoomListDataSource: RentRoomListDataSource = new RentRoomListDataSource([])
@@ -76,6 +78,15 @@ export default struct WaterfallFlow {
   loadMore = () => {
     this.searchOptions.page++;
     this.getRentRoomList()
+  }
+
+  goRentRoomDetail = (id: string) => {
+    router.pushUrl({
+      url: 'pages/RentRoom/RentRoomDetail',
+      params: {
+        id
+      }
+    })
   }
 
   @Builder
@@ -177,7 +188,9 @@ export default struct WaterfallFlow {
             .borderRadius(rvp(BORDER_RADIUS))
             .height('100%')
             .width(rvp(165))
-          }.height(room.activity ? rvp(320) : rvp(210))
+          }
+          .height(room.activity ? rvp(320) : rvp(210))
+          .onClick(() => this.goRentRoomDetail(room.id))
         }, (room: IRentRoomItem) => room.id)
       }
       .columnsTemplate("1fr 1fr")
