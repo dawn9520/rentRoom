@@ -1,20 +1,24 @@
+import NavBar from '../../views/RentRoomDetail/NavBar'
+import ScrollContainer from '../../components/ScrollContainer'
+
 @Entry
 @Component
-struct RentRoomDetail {
-  @State message: string = 'Hello World';
+export default struct RentRoomDetail {
+  @Builder
+  NavBarRender() {
+    NavBar()
+  }
+
+  @Builder
+  ContentRender() {
+  }
 
   build() {
-    RelativeContainer() {
-      Text(this.message)
-        .id('RentRoomDetailHelloWorld')
-        .fontSize(50)
-        .fontWeight(FontWeight.Bold)
-        .alignRules({
-          center: { anchor: '__container__', align: VerticalAlign.Center },
-          middle: { anchor: '__container__', align: HorizontalAlign.Center }
-        })
-    }
-    .height('100%')
-    .width('100%')
+    Column() {
+      ScrollContainer({
+        navBuilder: this.NavBarRender.bind(this),
+        contentBuilder: this.ContentRender.bind(this),
+      })
+    }.height('100%')
   }
 }
