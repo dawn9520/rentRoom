@@ -6,7 +6,9 @@ import type {
   IDistrictList,
   IGetRentRoomListParams,
   IGetRentRoomListResponse,
-  IProvinceList
+  IProvinceList,
+  IRentRoomDetail,
+  IRentRoomDetailParams
 } from '../models/RentRoomData';
 
 // 获取租房列表数据
@@ -29,4 +31,10 @@ export const getCityListApi = (provinceCode: string): Promise<ICityList> => {
 export const getDistrictListApi = (cityCode: string): Promise<IDistrictList> => {
   const params: GetDistrictListParams = { cityCode }
   return http.get<IDistrictList>('/area', params)
+}
+
+// 获取租房详情数据
+export const getRentRoomDetailApi = (id: string): Promise<IRentRoomDetail> => {
+  const params: IRentRoomDetailParams = { id }
+  return http.get<IRentRoomDetail>('/house/detail', params)
 }
