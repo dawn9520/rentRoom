@@ -267,3 +267,9 @@ export interface IRentRoomDetail extends Omit<IRentRoomItem, 'housePicture'> {
 export interface IRentRoomDetailParams {
   id: string
 }
+
+export interface IRoomName {
+  spaceName: string
+  total: number
+}
+
