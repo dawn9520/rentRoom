@@ -3,10 +3,12 @@ import router from '@ohos.router'
 import NavBar from '../../views/RentRoomDetail/NavBar'
 import ScrollContainer from '../../components/ScrollContainer'
 import NavSwiper from '../../views/RentRoomDetail/NavSwiper'
-
+import RentPrice from '../../views/RentRoomDetail/RentPrice'
 
 import { getRentRoomDetailApi } from '../../api/rentRoom'
 import type { IRentRoomDetail, IRentRoomDetailParams, IRoomName } from '../../models/RentRoomData'
+import { rvp } from '../../utils/responsive'
+import { PADDING } from '../../constants/size'
 
 @Entry
 @Component
@@ -42,7 +44,10 @@ export default struct RentRoomDetail {
 
   @Builder
   ContentRender() {
-    NavSwiper({roomNameList: this.roomNameList, roomPictureList: this.roomPictureList})
+    NavSwiper({ roomNameList: this.roomNameList, roomPictureList: this.roomPictureList })
+    Column() {
+      RentPrice({ rentPriceUnitListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
+    }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
   build() {

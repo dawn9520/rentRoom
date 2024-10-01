@@ -261,7 +261,7 @@ export interface IRentRoomDetail extends Omit<IRentRoomItem, 'housePicture'> {
   "houseTitle": string
   "address": string
   "rentPriceUnit": string
-
+  "rentPriceUnitListing": string
 }
 
 export interface IRentRoomDetailParams {
