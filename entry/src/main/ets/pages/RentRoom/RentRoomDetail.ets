@@ -5,9 +5,17 @@ import ScrollContainer from '../../components/ScrollContainer'
 import NavSwiper from '../../views/RentRoomDetail/NavSwiper'
 import RentPrice from '../../views/RentRoomDetail/RentPrice'
 import DiscountsList from '../../views/RentRoomDetail/DiscountsList'
+import MetaInfo from '../../views/RentRoomDetail/MetaInfo'
 
 import { getRentRoomDetailApi } from '../../api/rentRoom'
-import type { IDiscountsList, IRentRoomDetail, IRentRoomDetailParams, IRoomName } from '../../models/RentRoomData'
+import type {
+  IDiscountsList,
+  IDistanceInfo,
+  IMetaInfoList,
+  IRentRoomDetail,
+  IRentRoomDetailParams,
+  IRoomName
+} from '../../models/RentRoomData'
 import { rvp } from '../../utils/responsive'
 import { PADDING } from '../../constants/size'
 
@@ -18,6 +26,8 @@ export default struct RentRoomDetail {
   @State roomNameList: IRoomName[] | undefined = [] // 房间区域名列表
   @State roomPictureList: string[] | undefined = [] // 区域名图片列表
   @State discountsList: IDiscountsList = [] //
+  @State metaInfoList: IMetaInfoList = []
+  @State distanceInfo: Partial<IDistanceInfo> = {}
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -37,6 +47,8 @@ export default struct RentRoomDetail {
       return p.concat(c.picList)
     }, []) // 注意这里的[]
     this.discountsList = this.room.discounts || []
+    this.metaInfoList = this.room.metaInfo || []
+    this.distanceInfo = this.room.distance_info || {}
   }
 
   @Builder
@@ -49,7 +61,8 @@ export default struct RentRoomDetail {
     NavSwiper({ roomNameList: this.roomNameList, roomPictureList: this.roomPictureList })
     Column() {
       RentPrice({ rentPriceUnitListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
-      DiscountsList({ discountsList: $discountsList })
+      DiscountsList({ discountsList: this.discountsList })
+      MetaInfo({ metaInfoList: this.metaInfoList, distanceInfo: this.distanceInfo })
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
