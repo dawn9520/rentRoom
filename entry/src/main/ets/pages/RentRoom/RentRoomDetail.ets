@@ -4,9 +4,10 @@ import NavBar from '../../views/RentRoomDetail/NavBar'
 import ScrollContainer from '../../components/ScrollContainer'
 import NavSwiper from '../../views/RentRoomDetail/NavSwiper'
 import RentPrice from '../../views/RentRoomDetail/RentPrice'
+import DiscountsList from '../../views/RentRoomDetail/DiscountsList'
 
 import { getRentRoomDetailApi } from '../../api/rentRoom'
-import type { IRentRoomDetail, IRentRoomDetailParams, IRoomName } from '../../models/RentRoomData'
+import type { IDiscountsList, IRentRoomDetail, IRentRoomDetailParams, IRoomName } from '../../models/RentRoomData'
 import { rvp } from '../../utils/responsive'
 import { PADDING } from '../../constants/size'
 
@@ -14,8 +15,9 @@ import { PADDING } from '../../constants/size'
 @Component
 export default struct RentRoomDetail {
   @State room: Partial<IRentRoomDetail> = {}
-  @State roomNameList: IRoomName[] | undefined = []
-  @State roomPictureList: string[] | undefined = []
+  @State roomNameList: IRoomName[] | undefined = [] // 房间区域名列表
+  @State roomPictureList: string[] | undefined = [] // 区域名图片列表
+  @State discountsList: IDiscountsList = [] //
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -34,7 +36,7 @@ export default struct RentRoomDetail {
     this.roomPictureList = this.room.housePicture?.reduce((p: string[], c) => {
       return p.concat(c.picList)
     }, []) // 注意这里的[]
-
+    this.discountsList = this.room.discounts || []
   }
 
   @Builder
@@ -47,6 +49,7 @@ export default struct RentRoomDetail {
     NavSwiper({ roomNameList: this.roomNameList, roomPictureList: this.roomPictureList })
     Column() {
       RentPrice({ rentPriceUnitListing: this.room.rentPriceUnitListing, rentPriceUnit: this.room.rentPriceUnit })
+      DiscountsList({ discountsList: $discountsList })
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
