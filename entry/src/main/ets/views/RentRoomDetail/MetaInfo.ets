@@ -4,8 +4,8 @@ import type { IDistanceInfo, IMetaInfoItem } from '../../models/RentRoomData';
 
 @Component
 export default struct MetaInfo {
-  @Link metaInfoList: IMetaInfoItem[]
-  @Link distanceInfo: Partial<IDistanceInfo>
+  @Prop metaInfoList: IMetaInfoItem[]
+  @Prop distanceInfo: Partial<IDistanceInfo>
 
   build() {
     Row({ space: rvp(4) }) {

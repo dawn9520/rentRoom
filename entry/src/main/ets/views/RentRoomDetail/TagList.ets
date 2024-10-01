@@ -3,7 +3,7 @@ import { ITagItem } from '../../models/RoomRecommendDataSource';
 
 @Component
 export default struct TagList {
-  @Link tagList: ITagItem[]
+  @Prop tagList: ITagItem[]
 
   build() {
     Row({ space: rvp(14) }) {

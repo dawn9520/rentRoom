@@ -4,7 +4,7 @@ import type { IDiscountsItem } from '../../models/RentRoomData'
 
 @Component
 export default struct DiscountsList {
-  @Link discountsList: IDiscountsItem[]
+  @Prop discountsList: IDiscountsItem[]
 
   build() {
     Column({ space: rvp(16) }) {
