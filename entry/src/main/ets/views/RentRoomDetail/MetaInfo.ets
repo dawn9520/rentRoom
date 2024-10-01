@@ -32,7 +32,7 @@ export default struct MetaInfo {
           if (this.distanceInfo && this.distanceInfo.line) {
             Row({ space: rvp(4) }) {
               Text(this.distanceInfo.line)
-                .fontSize(rvp(16))
+                .fontSize(rvp(10))
                 .fontColor($r('app.color.white'))
                 .backgroundColor('#01ab39')
                 .padding({
