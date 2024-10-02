@@ -7,6 +7,7 @@ import RentPrice from '../../views/RentRoomDetail/RentPrice'
 import DiscountsList from '../../views/RentRoomDetail/DiscountsList'
 import MetaInfo from '../../views/RentRoomDetail/MetaInfo'
 import TagList from '../../views/RentRoomDetail/TagList'
+import RentTerm from '../../views/RentRoomDetail/RentTerm'
 
 import { getRentRoomDetailApi } from '../../api/rentRoom'
 import type {
@@ -16,8 +17,9 @@ import type {
   IRentRoomDetail,
   IRentRoomDetailParams,
   IRoomName,
+  IRentTerm
 } from '../../models/RentRoomData'
-import { ITagList } from '../../models/RoomRecommendDataSource';
+import { ITagList } from '../../models/RoomRecommendDataSource'
 import { rvp } from '../../utils/responsive'
 import { PADDING } from '../../constants/size'
 
@@ -31,6 +33,7 @@ export default struct RentRoomDetail {
   @State metaInfoList: IMetaInfoList = []
   @State distanceInfo: Partial<IDistanceInfo> = {}
   @State tagList: ITagList = []
+  @State rentTerm: Partial<IRentTerm> = {}
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -53,6 +56,7 @@ export default struct RentRoomDetail {
     this.metaInfoList = this.room.metaInfo || []
     this.distanceInfo = this.room.distance_info || {}
     this.tagList = this.room.tags || []
+    this.rentTerm = this.room.rentTerm || {}
   }
 
   @Builder
@@ -68,6 +72,7 @@ export default struct RentRoomDetail {
       DiscountsList({ discountsList: this.discountsList })
       MetaInfo({ metaInfoList: this.metaInfoList, distanceInfo: this.distanceInfo })
       TagList({ tagList: this.tagList })
+      RentTerm({ rentTerm: this.rentTerm })
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
