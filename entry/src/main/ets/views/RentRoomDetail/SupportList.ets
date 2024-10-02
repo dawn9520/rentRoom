@@ -4,7 +4,7 @@ import type { ISupportItem } from '../../models/RentRoomData';
 
 @Component
 export default struct SupportList {
-  @Link supportList: ISupportItem[]
+  @Prop supportList: ISupportItem[]
 
   build() {
     Column({ space: rvp(8) }) {
@@ -16,7 +16,7 @@ export default struct SupportList {
             Row({ space: rvp(10) }) {
               Image(support.image).width(rvp(28))
               Column() {
-                Text(support.title).fontSize(rvp(12))
+                Text(support.title).fontSize(rvp(14))
                 Text(support.subTitle).grayText(10)
               }.alignItems(HorizontalAlign.Start)
             }.width('100%')

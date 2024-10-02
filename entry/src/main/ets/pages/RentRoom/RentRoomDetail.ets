@@ -10,11 +10,14 @@ import TagList from '../../views/RentRoomDetail/TagList'
 import RentTerm from '../../views/RentRoomDetail/RentTerm'
 import RentInfo from '../../views/RentRoomDetail/RentInfo'
 import SupportList from '../../views/RentRoomDetail/SupportList'
+import HouseholdItem from '../../views/RentRoomDetail/HouseholdItem'
+import Book from '../../views/RentRoomDetail/Book'
 
 import { getRentRoomDetailApi } from '../../api/rentRoom'
 import type {
   IDiscountsList,
   IDistanceInfo,
+  IHouseholdList,
   IMetaInfoList,
   IRentInfoList,
   IRentRoomDetail,
@@ -40,6 +43,7 @@ export default struct RentRoomDetail {
   @State rentTerm: Partial<IRentTerm> = {}
   @State rentInfoList: IRentInfoList = []
   @State supportList: ISupportList = []
+  @State householdList: IHouseholdList = []
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -65,6 +69,7 @@ export default struct RentRoomDetail {
     this.rentTerm = this.room.rentTerm || {}
     this.rentInfoList = this.room.rentInfo || []
     this.supportList = this.room.support || []
+    this.householdList = this.room.householdItem || []
   }
 
   @Builder
@@ -82,12 +87,22 @@ export default struct RentRoomDetail {
       TagList({ tagList: this.tagList })
       RentTerm({ rentTerm: this.rentTerm })
       RentInfo({ rentInfoList: this.rentInfoList })
+      HouseholdItem({ householdList: this.householdList })
       SupportList({ supportList: this.supportList })
+      Button('查看全部内容')
+        .type(ButtonType.Normal)
+        .width('100%')
+        .height(rvp(44))
+        .fontSize(rvp(12))
+        .fontColor('#ABA9AC')
+        .margin({ top: rvp(25) })
+        .backgroundColor($r('app.color.white'))
+        .border({ width: 1, color: '#F5F5F5', radius: rvp(4) })
     }.padding({ left: rvp(PADDING), right: rvp(PADDING) })
   }
 
   build() {
-    Column() {
+    Stack() {
       ScrollContainer({
         navBuilder: () => {
           this.NavBarRender()
@@ -96,6 +111,8 @@ export default struct RentRoomDetail {
           this.ContentRender()
         },
       })
-    }.height('100%')
+
+      Book()
+    }.height('100%').alignContent(Alignment.Bottom)
   }
 }
