@@ -1,14 +1,14 @@
 import { getCityListApi, getDistrictListApi, getProvinceListApi } from '../../api/rentRoom'
 import { BORDER_RADIUS_S, PADDING } from '../../constants/size'
 import {
-    ICityItem,
-    ICityList,
-    IDistrictItem,
-    IDistrictList,
-    IProvinceItem,
-    IProvinceList,
-    IRentPriceItem,
-    ISortItem
+  ICityItem,
+  ICityList,
+  IDistrictItem,
+  IDistrictList,
+  IProvinceItem,
+  IProvinceList,
+  IRentPriceItem,
+  ISortItem
 } from '../../models/RentRoomData'
 import { PaymentTypeDataAny, RentPriceDataAny, SortDataAny } from '../../models/RentRoomData/dataAny'
 import { rvp } from '../../utils/responsive'
@@ -257,7 +257,7 @@ export default struct SearchFilter {
   // 付款类型搜索
   paymentTypeSearch() {
     globalEmitter.emit('searchOptionsChange', {
-      paymentType: this.paymentTypeData.searchPaymentType
+      paymentType: this.paymentTypeData.paymentType
     })
     this.paymentTypeData.isSearch = true;
     this.paymentTypeClose()
