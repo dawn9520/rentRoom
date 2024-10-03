@@ -1,28 +1,47 @@
+import router from '@ohos.router';
+
 import Home from './Home';
 import See from './See';
 import Service from './Service';
 import Discover from './Discover';
 import My from './My';
 import { getWindowBottomHeight, rvp } from '../utils/responsive';
-import type { IColors } from '../models/ColorsData'
+import type { IColors } from '../models/ColorsData';
 import { setWindowStatusColor } from '../utils/method';
+
+// 持久化存储token 必须放在入口页面
+PersistentStorage.persistProp('token', '')
 
 @Entry
 @Component
 struct Index {
   @StorageLink('navBarBgColor') navBarFontColor: string = ''
   @StorageLink('navBarFontColor') navBarBgColor: string = ''
-
+  @StorageLink('token') token: string = ''
   // 当前 tab 高亮的下标
   @State currentIndex: number = 0;
   colors: IColors = []
 
+  aboutToAppear() {
+    interface RouterParams { currentIndex: number }
+
+    const params = router.getParams() as RouterParams
+    if (params) {
+      this.currentIndex = params.currentIndex
+      router.clear()
+    }
+  }
+
   // 生成 tab 的函数
-  @Builder TabBuilder(index: number, text: string, icon: Resource, activeIcon: Resource) {
+  @Builder
+  TabBuilder(index: number, text: string, icon: Resource, activeIcon: Resource) {
     Column() {
       // 项目中常用的颜色、大小等会定义成常量，将来方便复用和统一调整。而不常用的大小颜色就不需要定义了，直接写死即可。
       Image(this.currentIndex === index ? activeIcon : icon).width(rvp(28))
-      Text(text).fontSize(rvp(10)).fontColor(this.currentIndex === index ? $r('app.color.black') : '#a0a0a0').height(rvp(15))
+      Text(text)
+        .fontSize(rvp(10))
+        .fontColor(this.currentIndex === index ? $r('app.color.black') : '#a0a0a0')
+        .height(rvp(15))
     }.width('100%').height('100%').justifyContent(FlexAlign.Center)
   }
 
