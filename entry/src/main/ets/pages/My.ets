@@ -1,7 +1,8 @@
 import { IColor } from '../models/HomeData'
 import { getWindowTopHeight, rvp } from '../utils/responsive'
 import { PADDING } from '../constants/size'
-
+import type { IUserInfo } from '../models/UserData'
+import { getUserInfoApi } from '../api/user'
 
 import ScrollContainer from '../components/ScrollContainer'
 import Bg from '../views/My/Bg'
@@ -13,6 +14,34 @@ import PlanList from '../views/My/PlanList'
 
 @Component
 export default struct My {
+  @Prop @Watch('handleIsActiveTabChange') isActiveTab: boolean
+  @State userInfo: IUserInfo = {
+    id: 0,
+    avatar: '',
+    nickname: ''
+  }
+
+  aboutToAppear() {
+    this.handleIsActiveTabChange()
+  }
+
+  handleIsActiveTabChange() {
+    console.log('----33')
+    if (this.isActiveTab) {
+      const token = AppStorage.get('token') as string;
+      console.log('----444', token)
+      if (token) {
+        console.log('---22')
+        this.getUserInfo()
+      }
+    }
+  }
+
+  async getUserInfo() {
+    this.userInfo = await getUserInfoApi()
+    console.log('----11', JSON.stringify(this.userInfo))
+  }
+
   @Builder
   navBuilder($$: IColor) {
     NavBar($$)
@@ -23,7 +52,7 @@ export default struct My {
     Stack() {
       Bg()
       Column() {
-        UserInfo()
+        UserInfo({ userInfo: this.userInfo })
         TimePlan()
         Order()
         PlanList()

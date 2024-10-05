@@ -65,7 +65,7 @@ struct Index {
         }.tabBar(this.TabBuilder(3, '发现', $r('app.media.tabbar_discover'), $r('app.media.tabbar_discover_active')))
 
         TabContent() {
-          My()
+          My({ isActiveTab: this.currentIndex === 4 })
         }.tabBar(this.TabBuilder(4, '我的', $r('app.media.tabbar_my'), $r('app.media.tabbar_my_active')))
       }
       .vertical(false) // 设置tab位置在竖直方向

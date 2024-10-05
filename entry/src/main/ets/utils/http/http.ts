@@ -9,6 +9,10 @@ request.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     // 未来需要添加 token
     // config.headers.token = token;
+    const token = AppStorage.get('token') as string;
+    if (token) {
+      config.headers.token = token;
+    }
     return config;
   }
 )
