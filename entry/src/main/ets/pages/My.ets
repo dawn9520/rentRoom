@@ -26,12 +26,9 @@ export default struct My {
   }
 
   handleIsActiveTabChange() {
-    console.log('----33')
     if (this.isActiveTab) {
       const token = AppStorage.get('token') as string;
-      console.log('----444', token)
       if (token) {
-        console.log('---22')
         this.getUserInfo()
       }
     }
@@ -39,7 +36,6 @@ export default struct My {
 
   async getUserInfo() {
     this.userInfo = await getUserInfoApi()
-    console.log('----11', JSON.stringify(this.userInfo))
   }
 
   @Builder
@@ -62,7 +58,9 @@ export default struct My {
 
   build() {
     ScrollContainer({
-      contentBuilder: this.contentBuilder,
+      contentBuilder: () => {
+        this.contentBuilder()
+      },
       navBuilder: this.navBuilder,
     })
   }

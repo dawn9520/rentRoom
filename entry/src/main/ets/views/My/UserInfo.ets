@@ -8,12 +8,7 @@ import type { IUserInfo } from '../../models/UserData'
 @Component
 export default struct UserInfo {
   @State avatarSrc: string = ''
-  @Prop userInfo: IUserInfo = {
-    id: 0,
-    avatar: '',
-    nickname: ''
-  }
-
+  @Link userInfo: IUserInfo
   goLoginPhone = () => {
     router.pushUrl({ url: 'pages/Login/LoginPhone' })
   }
@@ -26,7 +21,7 @@ export default struct UserInfo {
           .fontSize(rvp(16))
           .fontColor($r('app.color.white'))
           .fontWeight(700)
-        Text('谷粒点15').fontSize(rvp(12)).fontColor($r('app.color.white'))
+        // Text('谷粒点15').fontSize(rvp(12)).fontColor($r('app.color.white'))
       }.alignItems(HorizontalAlign.Start).onClick(this.goLoginPhone)
     }.margin({ top: rvp(11) }).width('100%')
   }
