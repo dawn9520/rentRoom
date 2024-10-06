@@ -12,6 +12,7 @@ import RentInfo from '../../views/RentRoomDetail/RentInfo'
 import SupportList from '../../views/RentRoomDetail/SupportList'
 import HouseholdItem from '../../views/RentRoomDetail/HouseholdItem'
 import Book from '../../views/RentRoomDetail/Book'
+import BookRentRoom from '../../views/RentRoomDetail/BookRentRoom'
 
 import { getRentRoomDetailApi } from '../../api/rentRoom'
 import type {
@@ -44,6 +45,7 @@ export default struct RentRoomDetail {
   @State rentInfoList: IRentInfoList = []
   @State supportList: ISupportList = []
   @State householdList: IHouseholdList = []
+  @State show: boolean = false
 
   aboutToAppear() {
     this.getRentRoomDetail()
@@ -112,7 +114,8 @@ export default struct RentRoomDetail {
         },
       })
 
-      Book()
+      Book({ show: this.show })
+      BookRentRoom({ show: this.show })
     }.height('100%').alignContent(Alignment.Bottom)
   }
 }
