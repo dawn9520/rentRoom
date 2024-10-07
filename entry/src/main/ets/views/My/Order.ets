@@ -1,3 +1,4 @@
+import router from '@ohos.router'
 import Card from '../../components/Card'
 import { PADDING } from '../../constants/size'
 import { rvp } from '../../utils/responsive'
@@ -65,6 +66,11 @@ export default struct Order {
               Image(nav.icon).width(rvp(16)).height(rvp(16))
               Text(nav.text).fontSize(rvp(12)).fontColor($r('app.color.black'))
             }
+            .onClick(() => {
+              if (nav.text === '约看') {
+                router.pushUrl({ url: 'pages/BookRentRoomList' })
+              }
+            })
           }, (nav: INavItem) => nav.id + '')
         }.width('100%').justifyContent(FlexAlign.Center)
 

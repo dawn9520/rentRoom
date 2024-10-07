@@ -4,6 +4,7 @@
     "pages/RentRoom/RentRoomList",
     "pages/RentRoom/RentRoomDetail",
     "pages/Login/LoginPhone",
-    "pages/Login/LoginCode"
+    "pages/Login/LoginCode",
+    "pages/BookRentRoomList"
   ]
 }

@@ -1,9 +1,12 @@
 export interface IBookRentRoomItem {
-  "id": number
-  "userId": number
-  "houseId": string
+  "id": string
   "date": string
-  "name": string
+  "houseId": string
+  "img": string
+  "title": string
+  "subTitle": string
+  "distanceInfo": null | string,
+  "rentPrice": string,
   "comment": string
 }
 
