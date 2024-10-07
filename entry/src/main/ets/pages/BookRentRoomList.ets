@@ -1,11 +1,10 @@
 import ScrollContainer from '../components/ScrollContainer'
 import NavBar from '../components/NavBar'
 // import SafeArea from '../components/SafeArea'
-
 import { getBookRentRoomListApi } from '../api/book'
 import type { IBookRentRoomItem, IBookRentRoomList } from '../models/BookRentRoomList'
 
-import { rvp } from '../utils/responsive'
+import { getWindowTopHeight, rvp } from '../utils/responsive'
 import { PADDING } from '../constants/size'
 
 @Entry
@@ -30,7 +29,7 @@ struct BookRentRoomList {
   ContentRender() {
     // SafeArea()
     Row() {
-    }.height(rvp(44))
+    }.height(rvp(44 + getWindowTopHeight()))
 
     List({ space: rvp(16) }) {
       ForEach(this.bookList, (book: IBookRentRoomItem) => {

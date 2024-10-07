@@ -7,6 +7,7 @@ import type { INavItem, INavList } from '../../models/NavList'
 
 @Component
 export default struct Order {
+  @StorageProp('token') token: string = '';
   @State navList1: INavList = [
     {
       id: 1,
@@ -68,6 +69,10 @@ export default struct Order {
             }
             .onClick(() => {
               if (nav.text === '约看') {
+                if (!this.token) {
+                  router.pushUrl({ url: 'pages/Login/LoginPhone' })
+                  return
+                }
                 router.pushUrl({ url: 'pages/BookRentRoomList' })
               }
             })
