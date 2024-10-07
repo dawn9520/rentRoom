@@ -2,13 +2,31 @@ import Drawer from '../../components/Drawer';
 import { BORDER_RADIUS, BORDER_RADIUS_S, PADDING } from '../../constants/size';
 import { rvp } from '../../utils/responsive';
 import createDateList, { IDateItem, IDateList } from '../../utils/createDateList';
+import type { IBookInfo } from '../../models/BookRentRoomList';
+import { bookRentRoomApi } from '../../api/rentRoom';
+import showToast from '../../utils/showToast';
+import { PHONE_REG } from '../../constants/regs';
 
 @Component
 export default struct BookInfo {
+  @Prop roomId: string;
   @Link show: boolean
   @State dateList: IDateList = createDateList()
   @State currentDateIndex: number = 0
   @State isCollapseDateList: boolean = true
+  @State bookInfo: Partial<IBookInfo> = {}
+
+  handleNameChange(name: string) {
+    this.bookInfo.name = name;
+  }
+
+  handlePhoneChange(phone: string) {
+    this.bookInfo.phone = phone;
+  }
+
+  handleCommentChange(comment: string) {
+    this.bookInfo.comment = comment;
+  }
 
   setCurrentDateIndex(index: number) {
     this.currentDateIndex = index
@@ -18,6 +36,40 @@ export default struct BookInfo {
     this.isCollapseDateList = !this.isCollapseDateList
   }
 
+  // 预约看房
+  async book() {
+    const name = this.bookInfo.name;
+    const phone = this.bookInfo.phone;
+    const comment = this.bookInfo.comment || '';
+    if (!name) {
+      showToast('请输入姓名')
+      return;
+    }
+    if (!phone) {
+      showToast('请输入手机号')
+      return;
+    }
+    if (!PHONE_REG.test(phone)) {
+      showToast('请输入合法的手机号')
+      return;
+    }
+    try {
+      const aa = await bookRentRoomApi({
+        name,
+        date: this.dateList[this.currentDateIndex].date,
+        houseId: this.roomId,
+        phone,
+        comment
+      })
+      showToast('预约成功')
+      setTimeout(() => {
+        this.show = false
+      }, 1000)
+    } catch {
+      showToast('预约失败，时间冲突')
+    }
+  }
+
   build() {
     Drawer({ show: this.show }) {
       Column({ space: rvp(16) }) {
@@ -25,12 +77,17 @@ export default struct BookInfo {
         Column({ space: rvp(20) }) {
           Row({ space: rvp(18) }) {
             Text('姓名').width(rvp(56)).fontSize(rvp(14))
-            TextInput({ placeholder: '请输入姓名' }).textInputStyles()
+            TextInput({ placeholder: '请输入姓名' })
+              .textInputStyles()
+              .onChange(this.handleNameChange.bind(this))
           }.width('100%')
 
           Row({ space: rvp(18) }) {
             Text('手机号').width(rvp(56)).fontSize(rvp(14))
-            TextInput({ placeholder: '请输入手机号' }).type(InputType.PhoneNumber).maxLength(11).textInputStyles()
+            TextInput({ placeholder: '请输入手机号' })
+              .type(InputType.PhoneNumber)
+              .maxLength(11).textInputStyles()
+              .onChange(this.handlePhoneChange.bind(this))
           }.width('100%')
 
           Row({ space: rvp(18) }) {
@@ -71,7 +128,9 @@ export default struct BookInfo {
 
           Row({ space: rvp(18) }) {
             Text('备注信息').width(rvp(56)).fontSize(rvp(14))
-            TextArea({ placeholder: '请输入备注信息' }).textAreaStyles()
+            TextArea({ placeholder: '请输入备注信息' })
+              .textAreaStyles()
+              .onChange(this.handleCommentChange.bind(this))
           }.width('100%').alignItems(VerticalAlign.Top)
         }
         .alignItems(HorizontalAlign.Start)
@@ -87,6 +146,7 @@ export default struct BookInfo {
           .fontSize(rvp(14))
           .backgroundColor('#24A17B')
           .borderRadius(rvp(2))
+          .onClick(this.book.bind(this))
       }.alignItems(HorizontalAlign.Start).padding({ bottom: rvp(PADDING) })
     }
   }

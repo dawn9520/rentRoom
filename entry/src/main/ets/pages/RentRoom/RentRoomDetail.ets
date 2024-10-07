@@ -46,14 +46,15 @@ export default struct RentRoomDetail {
   @State supportList: ISupportList = []
   @State householdList: IHouseholdList = []
   @State show: boolean = false
+  @State roomId: string = ''
 
   aboutToAppear() {
     this.getRentRoomDetail()
   }
 
   async getRentRoomDetail() {
-    const id = (router.getParams() as IRentRoomDetailParams).id
-    this.room = await getRentRoomDetailApi(id)
+    this.roomId = (router.getParams() as IRentRoomDetailParams).id
+    this.room = await getRentRoomDetailApi(this.roomId)
     this.roomNameList = this.room.housePicture?.map(item => {
       const roomName: IRoomName = {
         spaceName: item.spaceName,
@@ -115,7 +116,7 @@ export default struct RentRoomDetail {
       })
 
       Book({ show: this.show })
-      BookRentRoom({ show: this.show })
+      BookRentRoom({ show: this.show, roomId: this.roomId })
     }.height('100%').alignContent(Alignment.Bottom)
   }
 }

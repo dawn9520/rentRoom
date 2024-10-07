@@ -1,15 +1,16 @@
 import { http } from '../utils/http';
 import type {
-  GetCityListParams,
-  GetDistrictListParams,
-  ICityList,
-  IDistrictList,
-  IGetRentRoomListParams,
-  IGetRentRoomListResponse,
-  IProvinceList,
-  IRentRoomDetail,
-  IRentRoomDetailParams
+    GetCityListParams,
+    GetDistrictListParams,
+    ICityList,
+    IDistrictList,
+    IGetRentRoomListParams,
+    IGetRentRoomListResponse,
+    IProvinceList,
+    IRentRoomDetail,
+    IRentRoomDetailParams
 } from '../models/RentRoomData';
+import type { IBookInfo } from '../models/BookRentRoomList';
 
 // 获取租房列表数据
 export const getRentRoomListApi = (params: IGetRentRoomListParams): Promise<IGetRentRoomListResponse> => {
@@ -37,4 +38,9 @@ export const getDistrictListApi = (cityCode: string): Promise<IDistrictList> => 
 export const getRentRoomDetailApi = (id: string): Promise<IRentRoomDetail> => {
   const params: IRentRoomDetailParams = { id }
   return http.get<IRentRoomDetail>('/house/detail', params)
+}
+
+// 预约看房
+export const bookRentRoomApi = (bookInfo: IBookInfo): Promise<object> => {
+  return http.post<object>('/auth/house/reservation', bookInfo)
 }
