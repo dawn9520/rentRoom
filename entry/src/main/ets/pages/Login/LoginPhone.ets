@@ -2,7 +2,7 @@ import router from '@ohos.router'
 
 import NavBar from '../../components/NavBar'
 
-import { rvp } from '../../utils/responsive'
+import { getWindowTopHeight, rvp } from '../../utils/responsive'
 import { PHONE_REG } from '../../constants/regs'
 import showToast from '../../utils/showToast'
 
@@ -95,10 +95,12 @@ struct LoginPhone {
   build() {
     Column() {
       // SafeArea()
-      NavBar({ title: '验证码登录' })
+      NavBar({ title: '验证码登录' }).margin({ top: getWindowTopHeight() })
       this.LoginPhoneForm()
     }
-    .width('100%').height('100%').linearGradient({
+    .width('100%')
+    .height('100%')
+    .linearGradient({
       angle: 180,
       colors: [
         ['#DEFBE5', 0],

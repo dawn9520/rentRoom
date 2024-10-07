@@ -2,7 +2,7 @@ import router from '@ohos.router'
 
 import NavBar from '../../components/NavBar'
 
-import { rvp } from '../../utils/responsive'
+import { getWindowTopHeight, rvp } from '../../utils/responsive'
 import { loginApi, sendSMSCodeApi } from '../../api/user'
 import showToast from '../../utils/showToast'
 import { CODE_REG } from '../../constants/regs'
@@ -102,7 +102,7 @@ struct LoginCode {
 
   build() {
     Column() {
-      NavBar({ title: '验证码登录' })
+      NavBar({ title: '验证码登录' }).margin({ top: getWindowTopHeight() })
       this.LoginCodeForm()
     }
     .width('100%').height('100%').linearGradient({
