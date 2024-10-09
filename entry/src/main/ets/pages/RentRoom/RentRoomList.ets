@@ -11,7 +11,7 @@ struct RentRoomList {
     Stack() {
       WaterfallFlow()
       SearchFilter()
-      NavBar({ title: '租房列表' })
+      NavBar({ title: '房源推荐' })
     }
     .width('100%')
     .height('100%')
